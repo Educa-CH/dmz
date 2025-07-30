@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Identification</title>
+</head>
+<body>
+    <h1>Person Lookup</h1>
+<form method="POST">
+  <label>First Name:</label><br>
+  <input type="text" name="name" required><br><br>
+  
+  <label>Last Name:</label><br>
+  <input type="text" name="surname" required><br><br>
+
+  <button type="submit">Check</button>
+</form>
+
+{% if person_exists is not none %}
+  {% if person_exists %}
+    <p style="color: green;">✔ Person found in the database.</p>
+  {% else %}
+    <p style="color: red;">✘ Person not found in the database.</p>
+  {% endif %}
+{% endif %}
+</body>
+</html>

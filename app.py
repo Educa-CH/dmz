@@ -1,10 +1,20 @@
 from flask import Flask, render_template, request, redirect, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 import csv
 import os
 import requests
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///people.db'
+db = SQLAlchemy(app)
+class Person(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    surname = db.Column(db.String(100))
+    url = db.Column(db.String(300))
 
 # Stelle sicher, dass der Upload-Ordner existiert
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -42,7 +52,6 @@ def parse_flat_csv(filepath):
         return data
 
 
-
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -53,6 +62,15 @@ def upload_file():
             file.save(filepath)
 
             data = parse_flat_csv(filepath)
+
+            for row in data:
+                name = row.get('firstName')
+                surname = row.get('officialName')
+                if name and surname:
+                    person = Person(name=name, surname=surname)
+                    db.session.add(person)
+
+                db.session.commit()
 
             # API Call (Platzhalter-URL)
             api_url = 'https://api.example.com/endpoint'  # ← später ersetzen
@@ -73,5 +91,39 @@ def upload_file():
 
     return render_template('index.html')
 
+@app.route('/identification', methods=['GET', 'POST'])
+def identification():
+    person_exists = None
+    name = surname = ""
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        surname = request.form.get('surname')
+
+        print(name)
+        print(surname)
+
+        person = Person.query.filter(
+            func.lower(Person.surname) == name.lower(),
+            func.lower(Person.name) == surname.lower()
+                ).first()
+        person_exists = person is not None
+
+    return render_template(
+        'identification.html',
+        name=name,
+        surname=surname,
+        person_exists=person_exists
+    )
+
+@app.route('/people')
+def people():
+    all_people = Person.query.all()
+    return render_template('people.html', people=all_people)
+
+
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
+    
