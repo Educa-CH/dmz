@@ -1,0 +1,12 @@
+<!-- templates/qr.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Code for {{ person.name }} {{ person.surname }}</title>
+</head>
+<body>
+    <h1>QR Code for {{ person.name }} {{ person.surname }}</h1>
+    <p>URL: <a href="{{ person.url }}">{{ person.url }}</a></p>
+    <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code">
+</body>
+</html>
