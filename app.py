@@ -63,14 +63,6 @@ def upload_file():
 
             data = parse_flat_csv(filepath)
 
-            for row in data:
-                name = row.get('firstName')
-                surname = row.get('officialName')
-                if name and surname:
-                    person = Person(name=name, surname=surname)
-                    db.session.add(person)
-
-                db.session.commit()
 
             # API Call (Platzhalter-URL)
             api_url = 'https://api.example.com/endpoint'  # ← später ersetzen
@@ -83,6 +75,20 @@ def upload_file():
                 #    'status': 'success',
                 #    'api_response': response.json()
                 #})
+
+
+
+                # TODO return URL and store in DB
+                for row in data:
+                    name = row.get('officialName')
+                    surname = row.get('firstName')
+                    if name and surname:
+                        #add URL in next line
+                        person = Person(name=name, surname=surname)
+                        db.session.add(person)
+
+                db.session.commit()
+
             except Exception as e:
                 return jsonify({
                     'status': 'error',
@@ -104,8 +110,8 @@ def identification():
         print(surname)
 
         person = Person.query.filter(
-            func.lower(Person.surname) == name.lower(),
-            func.lower(Person.name) == surname.lower()
+            func.lower(Person.surname) == surname.lower(),
+            func.lower(Person.name) == name.lower()
                 ).first()
         person_exists = person is not None
 
