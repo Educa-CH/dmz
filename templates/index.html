@@ -1,13 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>CSV Upload</title>
-</head>
-<body>
-    <h1>CSV-Datei hochladen</h1>
-    <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".csv" required>
-        <button type="submit">Hochladen</button>
+{% extends "base.html" %}
+
+{% block index %}
+    <h1>Export hochladen</h1>
+    <form method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 500px; font-family: 'EducaSans', sans-serif; font-size: 1.1rem;">
+        <label for="file-upload" style="padding: 0.8rem 1.2rem; background-color: #e0e0e0; border: 2px solid #bbb; border-radius: 6px; cursor: pointer; width: fit-content;">
+            Datei auswählen
+        </label>
+        <input id="file-upload" type="file" name="file" accept=".csv" required style="display: none;" onchange="document.getElementById('filename').innerText = this.files[0]?.name || 'Keine Datei ausgewählt';">
+        
+        <span id="filename" style="font-size: 1.05rem; color: #555;">Keine Datei ausgewählt</span>
+
+        <button type="submit" style="padding: 0.8rem 1.5rem; font-size: 1.1rem; border-radius: 6px;">Hochladen</button>
     </form>
-</body>
-</html>
+{% endblock %}

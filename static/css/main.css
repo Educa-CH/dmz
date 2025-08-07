@@ -1,0 +1,168 @@
+@font-face {
+  font-weight: 400;
+  font-family: "EducaSans";
+  font-style: normal;
+  src: url(./webfonts/Educa_Sans_Webfonts/EducaSans-Regular.woff2) format("woff2");
+  font-display: auto;
+}
+@font-face {
+  font-weight: 500;
+  font-family: "EducaSans";
+  font-style: normal;
+  src: url(./webfonts/Educa_Sans_Webfonts/EducaSans-Medium.woff2) format("woff2");
+  font-display: auto;
+}
+@font-face {
+  font-weight: 700;
+  font-family: "EducaSans";
+  font-style: normal;
+  src: url(./webfonts/Educa_Sans_Webfonts/EducaSans-Bold.woff2) format("woff2");
+  font-display: auto;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+  
+/* Style the header */
+header {
+  background-color: rgb(255, 0, 58);
+  color: white;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* Style the footer */
+footer {
+  background-color: rgb(255, 0, 58);
+  font-family: "EducaSans", Helvetica, sans-serif;
+  color: white;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #101a3a;
+  font-family: "EducaSans", Helvetica, sans-serif;
+}
+
+/* Style the header */
+header {
+  background-color: rgb(205, 0, 58);
+  color: white;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* Style the footer */
+footer {
+  background-color: rgb(255, 255, 255);
+  font-family: "EducaSans", Helvetica, sans-serif;
+  color: white;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+h1 {
+  font-weight: 300;
+}
+
+h2 {
+  text-align: center;
+}
+
+form {
+  display: grid;
+  grid-template-columns: 30% 1fr; /* first column is 30% of total width */
+  grid-column-gap: 20px;
+  grid-row-gap: 10px;
+  align-items: center;
+  justify-items: start;
+}
+
+label {
+  grid-column: 1 / 2;
+}
+
+input {
+  grid-column: 2 / 3;
+  width: 100%;
+}
+
+button {
+  grid-column: 1 / -1;
+  width: calc(100%);
+}
+  
+label, input, button {
+  font-family: "EducaSans", Helvetica, sans-serif;
+  font-size: larger;
+}
+
+img {
+  display: block;
+  margin: auto;
+}
+
+.red-text {
+  color: rgb(205, 0, 58);
+}
+
+input[type="file"] {
+    display: none;
+}
+
+label[for="file-upload"] {
+    background-color: #e0e0e0;
+    padding: 0.8rem 1.2rem;
+    border: 2px solid #bbb;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: "EducaSans", Helvetica, sans-serif;
+    font-size: 1.1rem;
+}
+
+#filename {
+    font-size: 1.05rem;
+    color: #555;
+    font-family: "EducaSans", Helvetica, sans-serif;
+}
+
+form button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 6px;
+}
+
+
+
+
+
+  
+  
+  
+  
+  

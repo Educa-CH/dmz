@@ -1,26 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "base.html" %}
+
+{% block head %}
     <title>Identification</title>
-</head>
-<body>
-    <h1>Person Lookup</h1>
-<form method="POST">
-  <label>Last Name:</label><br>
-  <input type="text" name="name" required><br><br>
-  
-  <label>First Name:</label><br>
-  <input type="text" name="surname" required><br><br>
+{% endblock %}
 
-  <button type="submit">Check</button>
-</form>
+{% block index %}
+    <h1>Identifikation</h1>
+    <form method="POST">
+        <label>Nachname:</label>
+        <input type="text" name="name" required>
 
-{% if person_exists is not none %}
-  {% if person_exists %}
-    <p style="color: green;">✔ Person found in the database.</p>
-  {% else %}
-    <p style="color: red;">✘ Person not found in the database.</p>
-  {% endif %}
-{% endif %}
-</body>
-</html>
+        <label>Vorname:</label>
+        <input type="text" name="surname" required>
+
+        <button type="submit">Digitales Maturazeugnis erhalten</button>
+    </form>
+
+    {% if person_exists is not none %}
+        {% if person_exists %}
+            <p style="color: green;">✔ Person found in the database.</p>
+        {% else %}
+            <p style="color: red;">✘ Person not found in the database.</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

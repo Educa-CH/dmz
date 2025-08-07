@@ -1,43 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Stored People</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 2rem;
-            background-color: #f4f4f4;
-        }
+{% extends "base.html" %}
 
-        h1 {
-            color: #333;
-        }
+{% block head %}
+<style>
+    body {
+        font-family: "EducaSans", Helvetica, sans-serif;
+        padding: 2rem;
+    }
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
+    ul {
+        list-style: none;
+        padding: 0;
+    }
 
-        li {
-            background: #fff;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-    </style>
-</head>
-<body>
-    <h1>Stored People</h1>
-    {% if people %}
-        <ul>
-            {% for person in people %}
-                <li>{{ person.name }} {{ person.surname }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No people found in the database.</p>
-    {% endif %}
-</body>
-</html>
+    li {
+        background: #fff;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+
+{% block index %}
+<h1>Existierende Datenbankeinträge</h1>
+{% if people %}
+    <ul>
+        {% for person in people %}
+            <li>{{ person.name }} {{ person.surname }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No people found in the database.</p>
+{% endif %}
+{% endblock %}
