@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from flask import url_for
 from io import BytesIO
+from io import StringIO
 import csv
 import os
 import requests
@@ -26,38 +27,11 @@ class Person(db.Model):
 # Stelle sicher, dass der Upload-Ordner existiert
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-def parse_flat_csv(filepath):
-    with open(filepath, newline='', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        data = []
-        for row in reader:
-            flat_row = {}
-            for key, value in row.items():
-                # Sicherheitsprüfung: key und value müssen existieren
-                if key is None:
-                    continue  # ignoriere fehlerhafte Spalten
-
-                # value vorbereiten
-                if value is None:
-                    value = ""
-                elif not isinstance(value, str):
-                    value = str(value)
-
-                value = value.strip()
-
-                # leere Strings → None
-                if value == "":
-                    flat_row[key] = None
-                elif key == "thesis_grade" or key.startswith("grade_"):
-                    try:
-                        flat_row[key] = int(value)
-                    except ValueError:
-                        flat_row[key] = value
-                else:
-                    flat_row[key] = value
-            data.append(flat_row)
-        return data
-
+def csv_to_json(csv_string):
+    f = StringIO(csv_string)
+    reader = csv.DictReader(f)
+    data = [row for row in reader]
+    return data  # return Python list of dicts (JSON object)
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -68,28 +42,32 @@ def upload_file():
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
             file.save(filepath)
 
-            data = parse_flat_csv(filepath)
+            file.stream.seek(0)
+            csv_string = file.read().decode('utf-8')
+            data = csv_to_json(csv_string)
 
             try:
                 
                 # printing .csv data
                 print(data)
 
+                print(data[0]["firstName"])
+
 
                 # Step 1: Retrieving all the credential schemas
                 # In a real world scenario you would filter the schema you need by name
-                accessToken = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXcGtGQ3Zhbjltbk13U29lTmdITHlKdDBGZmZpRmlEY1J2eFJvdFFNWFFnIn0.eyJleHAiOjE3NTM5MDU3NzEsImlhdCI6MTc1Mzg2MjU3MSwianRpIjoidHJydGNjOmExMzVlZGNhLTU5NDEtNDA2MC05NGU0LTJhMDdmZTNhODViNyIsImlzcyI6Imh0dHBzOi8va2V5Y2xvYWsudHJpYWwucHJvY2l2aXMtb25lLmNvbS9yZWFsbXMvdHJpYWwiLCJhdWQiOlsib25lLWJmZi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6IjI2YmZjZDBiLTRlNWQtNDQ5YS1hNWQ3LWMzYWVkZDljNWE3NSIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9uZS1lZHVjYSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiRWR1Y2FfRURJVE9SIiwidW1hX2F1dGhvcml6YXRpb24iLCJkZWZhdWx0LXJvbGVzLXRyaWFsIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJncm91cCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJjbGllbnRIb3N0IjoiMTAuMS4yLjEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzZXJ2aWNlLWFjY291bnQtb25lLWVkdWNhIiwiY2xpZW50QWRkcmVzcyI6IjEwLjEuMi4xIiwiY2xpZW50X2lkIjoib25lLWVkdWNhIn0.ZNyu3CqlkKGB1v40PPRJiAlenrlVuAcWeAeu7NeF7PxSBIUt2DY2qegTly1IWq5_XL3U_j3b6mKa-Th1BOtMQ5k4KzLx_ffJ3LAMHiQDRfjD6Pemdh6b9O93MKPQ26Jo1noOy5cI0F7DXcHRR0EptOhYneGYDNaoE9yVsS9FO3yT1UGqtkzrashos1H-rjrSzLUK1IM8xpFPX-9fAn294azaWk66nhF7xLlvIqlvYK_yhreBmHgrvVcrYEEWnvAMZ4e001RVeDAZd92dm4STNAPM0peFzR0-2QRdKW_l_MWD5bqvL1q3RB5n-VZo8yDp1aGBrTc8aRmgZtG45V7yaA'
+                accessToken = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXcGtGQ3Zhbjltbk13U29lTmdITHlKdDBGZmZpRmlEY1J2eFJvdFFNWFFnIn0.eyJleHAiOjE3NTQ2MDMxMDgsImlhdCI6MTc1NDU1OTkwOCwianRpIjoidHJydGNjOmU5OTQ4NWUyLTJjMjgtNDVkOC1iMzYyLTMxMWYwMjU3ODQyZCIsImlzcyI6Imh0dHBzOi8va2V5Y2xvYWsudHJpYWwucHJvY2l2aXMtb25lLmNvbS9yZWFsbXMvdHJpYWwiLCJhdWQiOlsib25lLWJmZi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6IjI2YmZjZDBiLTRlNWQtNDQ5YS1hNWQ3LWMzYWVkZDljNWE3NSIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9uZS1lZHVjYSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiRWR1Y2FfRURJVE9SIiwidW1hX2F1dGhvcml6YXRpb24iLCJkZWZhdWx0LXJvbGVzLXRyaWFsIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZ3JvdXAgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiY2xpZW50SG9zdCI6IjEwLjEuMy4xIiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LW9uZS1lZHVjYSIsImNsaWVudEFkZHJlc3MiOiIxMC4xLjMuMSIsImNsaWVudF9pZCI6Im9uZS1lZHVjYSJ9.PiSq-u9IdmuArdeIuVl1lMPUcNxNyL4zyNgvl2V8_TUslsbhKOnf4Zy8OjBQ8UX3osuU2pBQHLh2_9yg913ijjCIxS1mXx_PTfSnfVGP-BbrQiJR4kyqcVy6re7pgDDQNrtJTf_opYK9xcE9eT0OoOyR0rVusDCQw3qpoHz82dQfb0Pm1nwZkcZtICoBBKE55_rUOi5Sf622JOddlk6hWA_Y8wjlKorZxvQQlC1zSv0yVuPxsoa7EG4HqFVKOeRvlFoqlADDhEmw1DmrZsWZnUDlZRsOEh1dDpiZi-bg-1p2DIQzBwsDjwiPWmci4OKG3IoqiwiwavF0Pk8uCMNj_g'
                 connection = http.client.HTTPSConnection(host='api.trial.procivis-one.com')
                 
                 baseHeaders = {
                 'Accept': 'application/json',
                 'Authorization': f'Bearer {accessToken}' 
                 }
-                connection.request("GET", "/api/credential-schema/v1", '', baseHeaders)
-                schemeListResponse = connection.getresponse()
+                #connection.request("GET", "/api/credential-schema/v1", '', baseHeaders)
+                #schemeListResponse = connection.getresponse()
 
                 # Getting all the schemas
-                schemeList = schemeListResponse.read().decode('utf-8')
+                #schemeList = schemeListResponse.read().decode('utf-8')
                 #print(json.dumps(schemeListString, indent=2))
 
                 #TODO: Selecting the schema you want from the scheme list
@@ -98,18 +76,18 @@ def upload_file():
                 # Retrieving the schema we need
 
                 #hardcoded in this example, from the json above
-                schemaNeeded = '66b0d9ea-6326-4539-85f0-c177a7820abe'
-                schemaEndpoint = f"/api/credential-schema/v1/{schemaNeeded}"
-                connection.request("GET", schemaEndpoint, '', baseHeaders)
-                chosenSchemaResponse = connection.getresponse()
-                chosenSchema = chosenSchemaResponse.read().decode('utf-8')
+                #schemaNeeded = '9841791e-06a4-4805-bfc9-d3286b851fdf'
+                #schemaEndpoint = f"/api/credential-schema/v1/{schemaNeeded}"
+                #connection.request("GET", schemaEndpoint, '', baseHeaders)
+                #chosenSchemaResponse = connection.getresponse()
+                #chosenSchema = chosenSchemaResponse.read().decode('utf-8')
                 #print(json.dumps(correctSchemeString, indent=2))
 
                 # Step 3
                 # Retrieve the right identifier to be used as issue > https://docs.procivis.ch/reference/desk/list-identifiers
-                connection.request("GET", '/api/identifier/v1', '', baseHeaders)
-                allIdentifiersResponse = connection.getresponse()
-                allIdentifiers = allIdentifiersResponse.read().decode('utf-8')
+                #connection.request("GET", '/api/identifier/v1', '', baseHeaders)
+                #allIdentifiersResponse = connection.getresponse()
+                #allIdentifiers = allIdentifiersResponse.read().decode('utf-8')
 
                 # Step 4
                 # Ceate the credential by using the ID of the claim in the schema
@@ -117,15 +95,140 @@ def upload_file():
                 #TODO: Using the right schema ID, obtained in step 2
                 #TODO: Using the right issuer ID, obtained in step 3
                 credentialPayload = json.dumps({
-                "credentialSchemaId": "66b0d9ea-6326-4539-85f0-c177a7820abe",
+                "credentialSchemaId": "9841791e-06a4-4805-bfc9-d3286b851fdf",
                 "issuer": "f2164b6f-db9c-4807-94a8-9aad37c0bd4b",
                 "protocol": "OPENID4VCI_DRAFT13_SWIYU",
                 "claimValues": [
                     {
-                    "claimId": "6b683bf6-1fa6-42fe-8ea5-30e2527eb0af",
-                    "path": "Field",
-                    "value": "Davide",
-                    }
+                    "claimId": "6fd5458f-bce7-46b8-bc6a-f7cfa9ac7d31",
+                    "path": "Vorname",
+                    "value": data[0]["firstName"],
+                    },
+                    {
+                    "claimId": "d0660762-8940-4f81-9901-3d231be717da",
+                    "path": "Nachname",
+                    "value": data[0]["officialName"],
+                    },
+                    {
+                    "claimId": "24a77a50-8b15-415e-abf0-3d3186b897a1",
+                    "path": "Heimatort",
+                    "value": data[0]["originName"],
+                    },
+                    {
+                    "claimId": "cf2442bb-72e0-41dc-b6fd-20a336293034",
+                    "path": "Geburtsdatum",
+                    "value": data[0]["dateOfBirth"],
+                    },
+                    {
+                    "claimId": "2f9a6cae-7ccb-4b8b-aac4-ad56d061115a",
+                    "path": "Ausbildung von:",
+                    "value": data[0]["durationFrom"],
+                    },
+                    {
+                    "claimId": "33f6452e-f415-46bb-8964-7c103e16da4c",
+                    "path": "Ausbildung bis:",
+                    "value": data[0]["durationTo"],
+                    },
+                    {
+                    "claimId": "0702996f-c90e-4dc6-a4e4-ca8e8811ba0d",
+                    "path": "Französisch",
+                    "value": data[0]["french"],
+                    },
+                    {
+                    "claimId": "a801d3d2-4ed1-437e-8b3e-7f3243d082ba",
+                    "path": "Deutsch",
+                    "value": data[0]["german"],
+                    },
+                    {
+                    "claimId": "65627ef3-5101-4b02-b78f-69eda89ca589",
+                    "path": "Englisch",
+                    "value": data[0]["english"],
+                    },
+                    {
+                    "claimId": "af486e01-8dd6-4680-9200-fe7e7ae41a89",
+                    "path": "Mathematik",
+                    "value": data[0]["math"],
+                    },
+                    {
+                    "claimId": "25ba9a2c-bd94-4697-9a7d-8d58920329fd",
+                    "path": "Mathematik Stufe",
+                    "value": data[0]["level_math"],
+                    },
+                    {
+                    "claimId": "ed307a4b-de9b-4b04-a484-7bc2e21e1839",
+                    "path": "Biologie",
+                    "value": data[0]["biology"],
+                    },
+                    {
+                    "claimId": "b4d355aa-1818-4f41-aa43-c26955bd4f02",
+                    "path": "Chemie",
+                    "value": data[0]["chemistry"],
+                    },
+                    {
+                    "claimId": "07d9ee66-8d58-48cb-aef5-a96c88497365",
+                    "path": "Physik",
+                    "value": data[0]["physics"],
+                    },
+                    {
+                    "claimId": "91a67c63-4d6c-410b-90e2-c81a4101cfd7",
+                    "path": "Geschichte",
+                    "value": data[0]["history"],
+                    },
+                    {
+                    "claimId": "b2351983-f713-45e7-82d2-cd09b3ac6fce",
+                    "path": "Philosophie",
+                    "value": data[0]["philosophy"],
+                    },
+                    {
+                    "claimId": "58864289-d777-483d-82ba-c0c5039cef27",
+                    "path": "Bildende Künste",
+                    "value": data[0]["visual_arts"],
+                    },
+                    {
+                    "claimId": "c5dc97fd-b60c-4348-85c8-1a0b828c4d95",
+                    "path": "Wahlfach Name",
+                    "value": data[0]["elective_name"],
+                    },
+                    {
+                    "claimId": "8bb4250f-02bf-4576-bfa6-ed887b67c740",
+                    "path": "Wahlfach Note",
+                    "value": data[0]["elective_grade"],
+                    },
+                    {
+                    "claimId": "b320a13a-1f6e-4980-84c6-2df817315f6c",
+                    "path": "Ergänzungsfach Name",
+                    "value": data[0]["supplementary_subject"],
+                    },
+                    {
+                    "claimId": "1e745fa6-f7ef-4a79-a7b1-64069cc07fc5",
+                    "path": "Ergänzungsfach Note",
+                    "value": data[0]["supplementary_subject_grade"],
+                    },
+                    {
+                    "claimId": "17e30929-e1bc-454d-a9f5-cc4b5d5d7da6",
+                    "path": "Maturaarbeit",
+                    "value": data[0]["thesis_title"],
+                    },
+                    {
+                    "claimId": "8ec4771f-e9af-4676-8c04-32e368093f7d",
+                    "path": "Maturaarbeit Note",
+                    "value": data[0]["thesis_grade"],
+                    },
+                    {
+                    "claimId": "42d7f826-1f03-4e19-a573-958bd4ffb735",
+                    "path": "Kantonsname",
+                    "value": data[0]["canton"],
+                    },
+                    {
+                    "claimId": "6a8e2530-30d8-4989-b285-4b83fb7e3cd5",
+                    "path": "Schulname",
+                    "value": data[0]["school_name"],
+                    },
+                    {
+                    "claimId": "7000200b-07ac-47e9-8cbd-66a6495d8017",
+                    "path": "Schulort",
+                    "value": data[0]["municipalityName"],
+                    },
                 ]
                 })
                 credentialHeaders = {
@@ -137,34 +240,31 @@ def upload_file():
                 credentialCreatedResponse = connection.getresponse()
                 credentialCreated = credentialCreatedResponse.read().decode("utf-8")
 
+                print(credentialCreated)    
+
+                credentialId = json.loads(credentialCreated)['id']
+
+                
+                print(credentialId)
+
                 # Step 5
                 # Issuing the credential
                 #TODO: using the ID of the credential created in step 4
                 #hardcoded at the moment - HackatonTest schema
-                credentialId = '2714aa43-4b54-4cde-b064-4d0e4a7424b3'
                 issuingCredentialEndpoint = f"/api/credential/v1/{credentialId}/share"
                 connection.request("POST", issuingCredentialEndpoint, '', baseHeaders)
                 credentialIssuedResponse = connection.getresponse()
                 credentialIssued = credentialIssuedResponse.read().decode("utf-8")
+
+                print(credentialIssued)
                 
+                url = json.loads(credentialIssued)['url']
 
-
-                #response = requests.post(api_url, json=data)
-                #return jsonify({
-                #    'status': 'success',
-                #    'api_response': response.json()
-                #})
-
-
-
-                # TODO return URL and store in DB
                 for row in data:
                     name = row.get('officialName')
                     surname = row.get('firstName')
                     if name and surname:
-                        url="swiyu://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fcore.trial.procivis-one.com%2Fssi%2Fopenid4vci%2Fdraft-13-swiyu%2F60ee3c1b-e50d-4f6e-8e5b-871106c45674%22%2C%22credential_configuration_ids%22%3A%5B%22https%3A%2F%2Fcore.trial.procivis-one.com%2Fssi%2Fvct%2Fv1%2F700e6b06-472e-4ae9-8385-62566919dbd0%2FHackathon%22%5D%2C%22grants%22%3A%7B%22urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Apre-authorized_code%22%3A%7B%22pre-authorized_code%22%3A%22c75cdc22-4abb-418e-b84e-410fc67c6dd6%22%7D%7D%2C%22credential_subject%22%3A%7B%22keys%22%3A%7B%7D%2C%22wallet_storage_type%22%3A%22SOFTWARE%22%7D%2C%22issuer_did%22%3A%22did%3Atdw%3AQmRhgQMBWT5DUHmjCAC64w86EdBYyoFFQLpRQMdWci2R8U%3Acore.trial.procivis-one.com%3Assi%3Adid-webvh%3Av1%3Ac4f7cafc-ed3a-46d5-a19d-3227c775acd3%22%7D"
-                        
-                        #add URL in next line
+
                         person = Person(name=name, surname=surname, url=url)
                         db.session.add(person)
 

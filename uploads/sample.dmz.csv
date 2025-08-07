@@ -1,2 +1,2 @@
-officialName,firstName,dateOfBirth,originName,canton,school_name,municipalityName,cantonAbbreviation,durationFrom,durationTo,thesis_title,thesis_grade,type_1,subject_1,grade_1,level_1,type_2,subject_2,grade_2,level_2
-Miller,Anna,10.10.2010,Thun,Bern,Gymnasium Hintermatten,Spiez,BE,01.01.2021,01.01.2024,Der Flug der Bienen,5,Hauptfach,Mathematik,5,basis,Hauptfach,Deutsch,4,,
+officialName,firstName,originName,dateOfBirth,durationFrom,durationTo,french,german,english,math,level_math,biology,chemistry,physics,history,philosophy,visual_arts,elective_name,elective_grade,supplementary_subject,supplementary_subject_grade,thesis_title,thesis_grade,canton,school_name,municipalityName
+Müller,Anna,Thun,10.10.2010,01.01.2021,01.01.2024,5,5,6,4,Basis,3,4,5,6,4,4,Biologie und Chemie,5,Sport,3,Der Flug der Bienen,5,Bern,Gymnasium Hintermatten,Spiez
