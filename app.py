@@ -1,4 +1,3 @@
-import json
 from flask import Flask, render_template, request, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
@@ -11,6 +10,8 @@ import requests
 import http.client
 import base64
 import qrcode
+import json
+import time
 
 
 app = Flask(__name__)
@@ -24,6 +25,12 @@ class Person(db.Model):
     surname = db.Column(db.String(100))
     url = db.Column(db.String(300))
 
+# Store key in memory (works if you have one app process; use Redis for multi-process)
+api_key_cache = {
+    "key": None,
+    "expires_at": 0
+}    
+
 # Stelle sicher, dass der Upload-Ordner existiert
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
@@ -33,8 +40,35 @@ def csv_to_json(csv_string):
     data = [row for row in reader]
     return data  # return Python list of dicts (JSON object)
 
+def get_api_key():
+    now = time.time()
+
+    # Only refresh if expired or not set
+    if not api_key_cache["key"] or now >= api_key_cache["expires_at"]:
+        print("Refreshing API key...")
+        resp = requests.post(
+            "https://keycloak.trial.procivis-one.com/realms/trial/protocol/openid-connect/token",
+            data={
+                "client_id": "one-educa",
+                "client_secret": "put_correct_secret_here",
+                "grant_type": "client_credentials",
+                "scope":"openid"
+            },
+            headers={
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        )
+        data = resp.json()
+        api_key_cache["key"] = data["access_token"]
+        api_key_cache["expires_at"] = now + data["expires_in"] - 60  # refresh 1 min early
+
+    return api_key_cache["key"]
+
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+
+    accessToken = get_api_key()
+
     if request.method == 'POST':
         # Datei aus dem Formular
         file = request.files['file']
@@ -56,7 +90,6 @@ def upload_file():
 
                 # Step 1: Retrieving all the credential schemas
                 # In a real world scenario you would filter the schema you need by name
-                accessToken = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXcGtGQ3Zhbjltbk13U29lTmdITHlKdDBGZmZpRmlEY1J2eFJvdFFNWFFnIn0.eyJleHAiOjE3NTQ5Mzc4NzUsImlhdCI6MTc1NDg5NDY3NSwianRpIjoidHJydGNjOjJhYjhjNTYzLWMxMTctNDIyMC04YTE4LTkyNDJkYjEwOGRmZSIsImlzcyI6Imh0dHBzOi8va2V5Y2xvYWsudHJpYWwucHJvY2l2aXMtb25lLmNvbS9yZWFsbXMvdHJpYWwiLCJhdWQiOlsib25lLWJmZi1jbGllbnQiLCJhY2NvdW50Il0sInN1YiI6IjI2YmZjZDBiLTRlNWQtNDQ5YS1hNWQ3LWMzYWVkZDljNWE3NSIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9uZS1lZHVjYSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiRWR1Y2FfRURJVE9SIiwidW1hX2F1dGhvcml6YXRpb24iLCJkZWZhdWx0LXJvbGVzLXRyaWFsIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZ3JvdXAgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiY2xpZW50SG9zdCI6IjEwLjEuMy4xIiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LW9uZS1lZHVjYSIsImNsaWVudEFkZHJlc3MiOiIxMC4xLjMuMSIsImNsaWVudF9pZCI6Im9uZS1lZHVjYSJ9.AhQC3aja-asipTAmmXIp_kvS9wceQoK1vyrGILvS5shNULTo68QkM8sIeRZ_1biN854IPsHzygs4bVi10GxYTc3HX0HIk8sW3i8PUgOeEBJ96VYschYRCkudGBA3b13ZC47KHypS_QIaWaGOqCgFHs2546DNml28PKPSm5Ccny-5MiiN0-6LxZIP52bBamt9kD5zX9R8ZNORsd4HJmboFfCTzKpgX8RxRmyHTfP04QctcwPNfyl-6meWtWcUtdu2Hk8Py4eFYo4E7pEreDqEmmy36nZP3T4We4YTSEMM0OxukSgBkDvFQxIAtZyDy1q0RitzGRXllvN6U2qqCZMkWQ'
                 connection = http.client.HTTPSConnection(host='api.trial.procivis-one.com')
                 
                 baseHeaders = {
@@ -271,6 +304,7 @@ def upload_file():
                 db.session.commit()
 
             except Exception as e:
+                print(e)
                 return jsonify({
                     'status': 'error',
                     'message': str(e)
@@ -282,6 +316,8 @@ def upload_file():
 def identification():
     person_exists = None
     name = surname = ""
+
+    key = get_api_key()
 
     if request.method == 'POST':
         name = request.form.get('name')
