@@ -25,6 +25,9 @@ class Person(db.Model):
     surname = db.Column(db.String(100))
     url = db.Column(db.String(300))
 
+with app.app_context():
+    db.create_all()    
+
 # Store key in memory (works if you have one app process; use Redis for multi-process)
 api_key_cache = {
     "key": None,
@@ -50,7 +53,7 @@ def get_api_key():
             "https://keycloak.trial.procivis-one.com/realms/trial/protocol/openid-connect/token",
             data={
                 "client_id": "one-educa",
-                "client_secret": "put_correct_secret_here",
+                "client_secret": "secret",
                 "grant_type": "client_credentials",
                 "scope":"openid"
             },
@@ -364,6 +367,4 @@ def qr_code(person_id):
 
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
