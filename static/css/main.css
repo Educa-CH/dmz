@@ -157,6 +157,36 @@ form button {
     border-radius: 6px;
 }
 
+/* Center the success block */
+.success-container {
+    text-align: center; /* centers all content inside */
+    margin-top: 2rem;
+}
+
+/* Button-style link without red background */
+a.button-link {
+    display: inline-block;
+    font-family: "EducaSans", Helvetica, sans-serif;
+    font-size: 1.1rem;
+    color: rgb(205, 0, 58); /* red text instead of background */
+    background-color: transparent;
+    border: 2px solid rgb(205, 0, 58);
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, transform 0.1s;
+}
+
+a.button-link:hover {
+    background-color: rgb(205, 0, 58);
+    color: white;
+    transform: translateY(-1px);
+}
+
+a.button-link:active {
+    transform: translateY(1px);
+}
 
 
 

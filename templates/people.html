@@ -27,7 +27,7 @@
 {% if people %}
     <ul>
         {% for person in people %}
-            <li>{{ person.name }} {{ person.surname }}</li>
+            <li>{{ person.name }} {{ person.surname }} - {{person.dateOfBirth}}</li>
         {% endfor %}
     </ul>
 {% else %}

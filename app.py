@@ -4,6 +4,7 @@ from sqlalchemy import func
 from flask import url_for
 from io import BytesIO
 from io import StringIO
+from werkzeug.exceptions import BadRequest
 import csv
 import os
 import requests
@@ -12,6 +13,7 @@ import base64
 import qrcode
 import json
 import time
+import io
 
 
 app = Flask(__name__)
@@ -23,6 +25,7 @@ class Person(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     surname = db.Column(db.String(100))
+    dateOfBirth = db.Column(db.String(10))
     url = db.Column(db.String(300))
 
 with app.app_context():
@@ -36,6 +39,26 @@ api_key_cache = {
 
 # Stelle sicher, dass der Upload-Ordner existiert
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+# check the structure of newly uploaded csv
+def csv_check(csv_string):
+    # Path to the reference CSV
+    reference_path = os.path.join("uploads", "sample.dmz.csv")
+    
+    # Read header from reference CSV
+    with open(reference_path, "r", newline='', encoding="utf-8") as ref_file:
+        ref_reader = csv.reader(ref_file)
+        ref_header = next(ref_reader, [])
+    
+    # Read header from given CSV string
+    input_reader = csv.reader(io.StringIO(csv_string))
+    input_header = next(input_reader, [])
+    
+    # Compare: same set of fields & same count
+    return (
+        len(ref_header) == len(input_header) and
+        set(ref_header) == set(input_header)
+    )
 
 def csv_to_json(csv_string):
     f = StringIO(csv_string)
@@ -53,7 +76,7 @@ def get_api_key():
             "https://keycloak.trial.procivis-one.com/realms/trial/protocol/openid-connect/token",
             data={
                 "client_id": "one-educa",
-                "client_secret": "secret",
+                "client_secret": "Y1oOzalI4idJoN9pIdrYpMFuSL0UB8hh",
                 "grant_type": "client_credentials",
                 "scope":"openid"
             },
@@ -81,15 +104,16 @@ def upload_file():
 
             file.stream.seek(0)
             csv_string = file.read().decode('utf-8')
-            data = csv_to_json(csv_string)
 
-            try:
-                
+            try:    
+                if not csv_check(csv_string):
+                    # this should ideally be something more intelligent             
+                    pass        
+                    
+                data = csv_to_json(csv_string)
+             
                 # printing .csv data
                 print(data)
-
-                print(data[0]["firstName"])
-
 
                 # Step 1: Retrieving all the credential schemas
                 # In a real world scenario you would filter the schema you need by name
@@ -299,19 +323,36 @@ def upload_file():
                 for row in data:
                     name = row.get('officialName')
                     surname = row.get('firstName')
-                    if name and surname:
+                    dateOfBirth = row.get('dateOfBirth')
 
-                        person = Person(name=name, surname=surname, url=url)
-                        db.session.add(person)
+                    if name and surname and dateOfBirth:
+                        # Check if this person already exists in DB
+                        existing_person = Person.query.filter_by(
+                            name=name,
+                            surname=surname,
+                            dateOfBirth=dateOfBirth
+                        ).first()
+
+                        if existing_person:
+                            # Update existing record
+                            existing_person.url = url
+                        else:
+                            # Create a new record
+                            new_person = Person(
+                                name=name,
+                                surname=surname,
+                                dateOfBirth=dateOfBirth,
+                                url=url
+                            )
+                            db.session.add(new_person)
 
                 db.session.commit()
 
+                return render_template('success.html', prompt="Digitales Maturazeugnis für " + name + " " + surname + " erfolgreich erstellt!")
+
             except Exception as e:
                 print(e)
-                return jsonify({
-                    'status': 'error',
-                    'message': str(e)
-                })
+                return render_template('failure.html',message=e)
 
     return render_template('index.html')
 
@@ -320,15 +361,15 @@ def identification():
     person_exists = None
     name = surname = ""
 
-    key = get_api_key()
-
     if request.method == 'POST':
         name = request.form.get('name')
         surname = request.form.get('surname')
+        dateOfBirth = request.form.get('dateOfBirth')
 
         person = Person.query.filter(
             func.lower(Person.surname) == surname.lower(),
-            func.lower(Person.name) == name.lower()
+            func.lower(Person.name) == name.lower(),
+            Person.dateOfBirth == dateOfBirth
         ).first()
 
         if person:
@@ -362,6 +403,10 @@ def qr_code(person_id):
     buffer = BytesIO()
     img.save(buffer, format="PNG")
     qr_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+
+    # Delete person after QR is generated, as QR Code is only valid once for scanning
+    db.session.delete(person)
+    db.session.commit()
 
     return render_template('qr.html', person=person, qr_code_base64=qr_base64)
 

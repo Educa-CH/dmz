@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Fail</title>
+{% endblock %}
+
+{% block index %}
+    <div class="success-container">
+        <h1>Fehler</h1>
+        <h3><span style="color: red;">✘</span>CSV ungültig: Die Struktur des CSV entspricht nicht dem vordefinierten Dateiformat. Fehler bei {{ message }} Siehe: https://github.com/Educa-CH/dmz/blob/main/uploads/sample.dmz.csv</h3>
+        <a href="{{ url_for('upload_file') }}" class="button-link">Erneut versuchen</a>
+    </div>
+{% endblock %}
