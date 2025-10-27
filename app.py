@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from flask import url_for
@@ -18,6 +18,7 @@ import io
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
+app.secret_key = 'supersupersecretkey'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///people.db'
 db = SQLAlchemy(app)
@@ -410,6 +411,24 @@ def qr_code(person_id):
 
     return render_template('qr.html', person=person, qr_code_base64=qr_base64)
 
+
+@app.route('/university')
+def register():
+    return render_template('university.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register_method():
+    session['program'] = request.form.get('program')   
+    return render_template('register.html',program=session['program'])
+
+@app.route('/register-method', methods=['GET', 'POST'])
+def register_e_id():
+    method = request.form.get('method')
+    if method == 'e-id':
+        # TODO
+        return render_template('register-e-id.html')
+    elif method == 'maturazeugnis':
+        return render_template('register-mz.html') 
 
 if __name__ == '__main__':
     app.run(debug=True)

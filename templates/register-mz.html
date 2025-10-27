@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Register</title>
+{% endblock %}
+
+{% block index %}
+    <h1>Registrierung abschliessen</h1>
+    <form method="POST">
+        <label>Nachname:</label>
+        <input type="text" name="name" required>
+
+        <label>Vorname:</label>
+        <input type="text" name="surname" required>
+
+        <label>Geburtsdatum:</label>
+        <input type="text" name="dateOfBirth" required>
+
+        <button type="submit">Digitales Maturazeugnis erhalten</button>
+    </form>
+{% endblock %}
