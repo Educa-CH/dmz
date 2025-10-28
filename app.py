@@ -29,6 +29,16 @@ class Person(db.Model):
     dateOfBirth = db.Column(db.String(10))
     url = db.Column(db.String(300))
 
+
+class Registered(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    surname = db.Column(db.String(100))
+    dateOfBirth = db.Column(db.String(10))
+    program = db.Column(db.String(300))
+    validation = db.Column(db.Boolean)
+    registration_method = db.Column(db.String)    
+
 with app.app_context():
     db.create_all()    
 
@@ -390,6 +400,11 @@ def people():
     all_people = Person.query.all()
     return render_template('people.html', people=all_people)
 
+@app.route('/registered')
+def registered():
+    all_registered = Registered.query.all()
+    return render_template('registered.html', registered=all_registered)
+
 @app.route('/qr/<int:person_id>')
 def qr_code(person_id):
     person = Person.query.get_or_404(person_id)
@@ -412,23 +427,51 @@ def qr_code(person_id):
     return render_template('qr.html', person=person, qr_code_base64=qr_base64)
 
 
-@app.route('/university')
-def register():
+@app.route('/university', methods=['GET', 'POST'])
+def select_program():
+    if request.method == 'POST':
+        session['program'] = request.form.get('program')   
+        
     return render_template('university.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_method():
-    session['program'] = request.form.get('program')   
-    return render_template('register.html',program=session['program'])
-
-@app.route('/register-method', methods=['GET', 'POST'])
-def register_e_id():
     method = request.form.get('method')
     if method == 'e-id':
-        # TODO
         return render_template('register-e-id.html')
     elif method == 'maturazeugnis':
-        return render_template('register-mz.html') 
+        return render_template('register-mz.html', program=session['program'])
+    return render_template('register.html',program=session['program'])
+
+    
+@app.route('/register-mz', methods=['GET', 'POST'])
+def register_mz():
+    if request.method == 'POST':
+        name = request.form.get('name') 
+        surname = request.form.get('surname')
+        dateOfBirth = request.form.get('dateOfBirth')
+        validation = False
+        program = session['program']
+        registration_method = 'Manual'
+    
+        # Create a new record
+        new_registered = Registered(
+            name=name,
+            surname=surname,
+            dateOfBirth=dateOfBirth,
+            program=program,
+            validation=validation,
+            registration_method=registration_method
+        )
+        db.session.add(new_registered)
+        db.session.commit() 
+    
+        return render_template('validation.html', registered=new_registered)
+    return render_template('register-mz.html', program=session['program'])
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
