@@ -7,6 +7,9 @@
 {% block index %}
     <h1>Registrierung abschliessen</h1>
     <form method="POST">
+        <label>Studiengang</label>
+        <h3>{{ program }}</h3>
+
         <label>Nachname:</label>
         <input type="text" name="name" required>
 
@@ -16,6 +19,6 @@
         <label>Geburtsdatum:</label>
         <input type="text" name="dateOfBirth" required>
 
-        <button type="submit">Digitales Maturazeugnis erhalten</button>
+        <button type="submit">Registrieren</button>
     </form>
 {% endblock %}
