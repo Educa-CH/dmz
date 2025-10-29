@@ -101,6 +101,14 @@ def get_api_key():
 
     return api_key_cache["key"]
 
+def get_claim_value_from_eid_proving(validation, key_name):
+    for proof in validation.get("proofInputs", []):
+        for claim in proof.get("claims", []):
+            if claim.get("schema", {}).get("key") == key_name:
+                return claim.get("value")
+    return None
+
+
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
 
@@ -404,6 +412,143 @@ def people():
 def registered():
     all_registered = Registered.query.all()
     return render_template('registered.html', registered=all_registered)
+
+#TODO: Renaming properly the method where we ask for the E-ID proof
+@app.route('/swiyu')
+def swiyu():
+
+    #Step 1 > config
+    accessToken = get_api_key()
+    conn = http.client.HTTPSConnection(host='api.trial.procivis-one.com')
+    headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json', 
+    'Authorization': f'Bearer {accessToken}'
+    }
+
+
+    # Step 2 > Getting all the proof schemas
+    conn.request("GET", "/api/proof-schema/v1", '', headers)
+    fullListResponse = conn.getresponse()
+    data = json.loads(fullListResponse.read().decode())
+    proofs = data.get("values", [])
+
+    # Step 3 > Filter by schema.name == "Proof swiyu Beta-e-ID"
+    swiyuProof = [p for p in proofs if p.get("name") == "Proof swiyu Beta-e-ID"]
+    proofSchemaId = swiyuProof[0]["id"]
+
+    # Step 4 > Creating the proof request
+    proofPayload = json.dumps({
+                f"proofSchemaId": proofSchemaId,
+                "verifier": "b92bf54c-e91e-4537-94d6-bf804649bf0a",
+                "protocol": "OPENID4VP_DRAFT20_SWIYU"
+        })
+    
+    conn.request("POST", "/api/proof-request/v1", proofPayload, headers)
+    proofCreatedResponse = conn.getresponse()
+    proofCreatedId = json.loads(proofCreatedResponse.read().decode("utf-8"))["id"]
+
+
+
+    # Step 5 > Requesting proof for the proofCreatedId
+    conn.request("POST", f"/api/proof-request/v1/{proofCreatedId}/share", '', headers)
+    individualProofRequestResponse = conn.getresponse()
+    share_url = json.loads(individualProofRequestResponse.read().decode()).get("url")
+    print(share_url)
+
+    # Step 6 > Generate QR code
+    qr = qrcode.QRCode(box_size=10, border=4)
+    qr.add_data(share_url)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    qr_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+
+    return render_template('validation.html', qr_code_base64=qr_base64, swiyu_proof_id=proofCreatedId)
+
+#TODO: Rename properly the method where we do the E-ID proof polling
+@app.route("/check/<swiyu_proof_id>")
+def check(swiyu_proof_id):
+
+    accessToken = get_api_key()
+    conn = http.client.HTTPSConnection(host='api.trial.procivis-one.com')
+    headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json', 
+    'Authorization': f'Bearer {accessToken}'
+    }
+
+    # Step 7 > Polling until proof request is accepted or errored
+    max_attempts = 30   # e.g. try for 30 * 3 seconds = 1.5 minute
+    delay_seconds = 3
+
+    for attempt in range(max_attempts):
+        conn.request("GET", f"/api/proof-request/v1/{swiyu_proof_id}", '', headers)
+        validation = json.loads(conn.getresponse().read().decode())
+        conn.close()
+
+        state = validation.get("state")
+        print(f"Attempt {attempt+1}: state = {state}")
+
+        # stop checking when resolved
+        if state in ("ACCEPTED", "ERROR", "REJECTED"):
+            break
+
+        time.sleep(delay_seconds)
+        # reopen connection for next poll
+        conn = http.client.HTTPSConnection('desk.trial.procivis-one.com')
+
+    # Step 8 > Retrieving proof inputs or proof error once it stops being in pending state
+    # State = ACCEPTED
+    if state == "ACCEPTED":
+        combined_claims = []
+        # looping all proof inputs
+        for proof in validation.get("proofInputs", []):
+            for claim in proof.get("claims", []):
+                # debug proof input
+                print(f"({claim.get('schema').get('key')}) - {claim.get('value')} ")
+                combined_claims.append(f"({claim.get('schema').get('key')}) - {claim.get('value')}")
+        # Create a new record
+        new_registered = Registered(
+            name=get_claim_value_from_eid_proving(validation, "given_name"),
+            surname=get_claim_value_from_eid_proving(validation, "family_name"),
+            dateOfBirth=get_claim_value_from_eid_proving(validation, "birth_date"),
+            #TODO: we must ensure there is a program selected...
+            program=session.get('program', 'Unknown'),
+            validation=False,
+            registration_method="SWIYU"
+        )
+        db.session.add(new_registered)
+        db.session.commit() 
+        return jsonify({"state": "ACCEPTED", "claims": combined_claims})
+    # State = ERROR
+    elif state == "ERROR":
+        print("Proof request failed with ERROR state")
+        return jsonify({"state": state})
+    # State = NOT PENDING ANYMORE / TIMEOUT / ANYTHING ELSE 
+    else:
+        print("Proof request not accepted yet after polling period.")
+        state = "TIMEOUT"
+        return jsonify({"state": state})
+
+
+# Here we handle the scenario in which the e-id verification works (status = ACCEPTED)  
+@app.route("/swiyusuccess")
+def swiyu_success():
+    claims = request.args.get("claims", "")
+    prompt = f"Verification successful! Claims: {claims}"
+    #TODO: Should we split the success page of the verification when the verification is the one of the diploma vs the one of the E-ID?
+    #TODO: Currently is the same page, with a script that starts when is initialized if the parameter is not null
+    return render_template("success.html", prompt=prompt)
+
+
+# Here we handle the scenario in which the e-id verification fails (or the polling takes too much time)    
+@app.route("/swiyufailure")
+def swiyu_failure():
+    #TODO: We need to refine the template for failure here
+    return render_template("swiyu-failure.html")
+
 
 @app.route('/qr/<int:person_id>')
 def qr_code(person_id):
