@@ -2,10 +2,9 @@
 
 {% block head %}
     <title>Validation</title>
-        <script>
+    <script>
 
-
- async function checkSwiyuProof() {
+    async function checkSwiyuProof() {
             const response = await fetch('/check/{{ swiyu_proof_id }}');
             const result = await response.json();
             if (result.state === "ACCEPTED") {
@@ -15,14 +14,15 @@
                 window.location.href = '/swiyufailure';
             }
         }
-        window.onload = function() {
-        const proofId = "{{ swiyu_proof_id }}";
-        if (proofId && proofId.trim() !== "") {
-            checkSwiyuProof();
-        } else {
-            console.log("No Swiyu proof ID available, skipping checkSwiyuProof()");
-        }
-    };
+            
+            window.onload = function() {
+            const proofId = "{{ swiyu_proof_id }}";
+            if (proofId && proofId.trim() !== "") {
+                checkSwiyuProof();
+            } else {
+                console.log("No Swiyu proof ID available, skipping checkSwiyuProof()");
+            }
+        };
     </script>
 {% endblock %}
 

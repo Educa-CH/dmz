@@ -440,6 +440,7 @@ def swiyu():
     # Step 4 > Creating the proof request
     proofPayload = json.dumps({
                 f"proofSchemaId": proofSchemaId,
+                #TODO: set the proper verifier (in this case is EPFL)
                 "verifier": "b92bf54c-e91e-4537-94d6-bf804649bf0a",
                 "protocol": "OPENID4VP_DRAFT20_SWIYU"
         })
