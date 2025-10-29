@@ -520,9 +520,70 @@ def validation():
     img.save(buffer, format="PNG")
     qr_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
 
-    return render_template('validation.html', qr_code_base64=qr_base64)
+    return render_template('validation.html', qr_code_base64=qr_base64,  proof_id=proofId)
 
+@app.route('/validation/status/<proof_id>')
+def proof_status(proof_id):
+    print("Status request..." + proof_id)
+    accessToken = get_api_key()
+    connection = http.client.HTTPSConnection(host='api.trial.procivis-one.com')
+    
+    baseHeaders = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json', 
+        'Authorization': f'Bearer {accessToken}' 
+    }
 
+    proofRequestsEndpoint = f"/api/proof-request/v1/{proof_id}"
+    connection.request("GET", proofRequestsEndpoint, '', baseHeaders)
+    proofRequestsResponse = connection.getresponse()
+    proofRequests = proofRequestsResponse.read().decode("utf-8")
+    
+    state = json.loads(proofRequests)['state']
+    return {"state": state}
+
+@app.route('/mz-validated/<proof_id>')
+def mz_validated(proof_id):
+    #TODO get claims and compare to DB
+    accessToken = get_api_key()
+    connection = http.client.HTTPSConnection(host='api.trial.procivis-one.com')
+    
+    baseHeaders = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json', 
+        'Authorization': f'Bearer {accessToken}' 
+    }
+
+    proofRequestsEndpoint = f"/api/proof-request/v1/{proof_id}"
+    connection.request("GET", proofRequestsEndpoint, '', baseHeaders)
+    proofRequestsResponse = connection.getresponse()
+    proofRequests = proofRequestsResponse.read().decode("utf-8")
+
+    data = json.loads(proofRequests)
+    # Get the first proof input
+    proof_input = data['proofInputs'][0]
+    # Create a dictionary of key-value pairs
+    claims_dict = {claim['schema']['key']: claim['value'] for claim in proof_input['claims']}
+
+    print(claims_dict['Vorname'])
+
+    name = claims_dict['Vorname']
+    surname = claims_dict['Nachname']
+    dateOfBirth = claims_dict['Geburtsdatum']
+    
+    registered = Registered.query.filter(
+        func.lower(Registered.name) == surname.lower(),
+        func.lower(Registered.surname) == name.lower(),
+        Registered.dateOfBirth == dateOfBirth
+    ).first()
+
+    if registered:
+        registered.validation = True
+
+        db.session.commit()
+        return render_template('mz-validated.html',status='success', prompt='Maturazeugnis erfolgreich validiert')
+    else:
+        return render_template('mz-validated.html',status='warning', prompt='Es konnte keine passende Registration gefunden werden')
 
 if __name__ == '__main__':
     app.run(debug=True)
