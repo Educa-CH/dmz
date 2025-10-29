@@ -429,8 +429,11 @@ def qr_code(person_id):
 
 @app.route('/university', methods=['GET', 'POST'])
 def select_program():
+    
+
     if request.method == 'POST':
-        session['program'] = request.form.get('program')   
+        session['program'] = request.form.get('program')
+        return render_template('register.html',program=session['program']) 
         
     return render_template('university.html')
 
@@ -466,10 +469,58 @@ def register_mz():
         db.session.add(new_registered)
         db.session.commit() 
     
-        return render_template('validation.html', registered=new_registered)
+        return redirect(url_for('validation'))
     return render_template('register-mz.html', program=session['program'])
 
 
+@app.route('/validation', methods=['GET', 'POST'])
+def validation():
+    accessToken = get_api_key()
+    connection = http.client.HTTPSConnection(host='api.trial.procivis-one.com')
+    
+    baseHeaders = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json', 
+        'Authorization': f'Bearer {accessToken}' 
+        }
+    proofPayload = json.dumps({
+                "proofSchemaId": "ef5f9810-3eb0-4700-acc0-c0fbd36db604",
+                "verifier": "b92bf54c-e91e-4537-94d6-bf804649bf0a",
+                "protocol": "OPENID4VP_DRAFT20_SWIYU"
+        })
+    
+    connection.request("POST", "/api/proof-request/v1", proofPayload, baseHeaders)
+    proofCreatedResponse = connection.getresponse()
+    proofCreated = proofCreatedResponse.read().decode("utf-8")
+
+    print(proofCreated)
+
+    proofId = json.loads(proofCreated)['id']
+             
+    print(proofId)
+
+    proofRequestEndpoint = f"/api/proof-request/v1/{proofId}/share"
+    connection.request("POST", proofRequestEndpoint, '', baseHeaders)
+    proofRequestResponse = connection.getresponse()
+    proofRequest = proofRequestResponse.read().decode("utf-8")
+    print(proofRequest)
+    
+    url = json.loads(proofRequest)['url']
+
+    print(url)
+
+    # Generate QR code
+    qr = qrcode.QRCode(box_size=10, border=4)
+    qr.add_data(url)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    # Convert image to base64
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    qr_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+
+    return render_template('validation.html', qr_code_base64=qr_base64)
 
 
 
