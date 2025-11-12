@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Register</title>
+{% endblock %}
+
+{% block index %}
+    <h2>Registrierungsmethode</h2>
+
+    <h3>Sie registrieren sich für den Studiengang: {{ program }}</h3>
+    <form action="/register-e-id">
+        <button type="submit">Ich möchte mich mit meiner E-ID registrieren</button>
+    </form>
+
+    <p>Wenn Sie nur ein digitales Maturitätszeugnis haben, klicken Sie hier:</p>
+    <form action="/register-mz">
+        <button type="submit">Ich möchte mein digitales Maturitätszeugnis verwenden</button>
+    </form>
+    </form>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Registration E-ID</title>
+{% endblock %}
+
+{% block index %}
+    <h1>Registrieren Sie sich mit ihrer E-ID</h1>
+    <h2>Scannen Sie den QR-Code mit ihrer Wallet!</h2>
+
+    <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code" style="width: 250px; height: 250px;">
+{% endblock %}
+
+{% block scripts %}
+<script>
+const proofId = "{{ proof_id }}";
+console.log("Proof ID:", proofId);
+
+function checkProofStatus() {
+    fetch(`/register-e-id/status/${proofId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.state === "ACCEPTED") {
+                window.location.href = `/validation`;
+            } else {
+                setTimeout(checkProofStatus, 1000);  // retry in 1s
+            }
+        });
+}
+
+checkProofStatus();
+</script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Success</title>
+{% endblock %}
+
+{% block index %}
+    {% if status == 'success' %}
+            <div class="success-container">
+                <h2><span style="color: green;">✔</span> {{ prompt }}</h2>
+                <form action="/issue-study-card/{{ id }}"">
+                    <button type="submit">Ich möchte eine digitale Studentenkarte erhalten</button>
+                </form>
+            </div>
+        {% elif status == 'warning' %}
+            <div class="warning-container">
+                <h2><span style="color: orange;">⚠</span> {{ prompt }}</h2>
+            </div>
+        {% else %}
+            <div class="info-container">
+                <h2>{{ prompt }}</h2>
+            </div>
+        {% endif %}
+{% endblock %}
