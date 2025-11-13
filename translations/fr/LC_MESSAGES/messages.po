@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-13 09:40+0100\n"
+"POT-Creation-Date: 2025-11-13 15:44+0100\n"
 "PO-Revision-Date: 2025-11-13 08:45+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,11 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: app.py:692
+#: app.py:491
+msgid "Datum muss folgendes Format haben YYYY-MM-DD"
+msgstr "La date doit être au format AAAA-MM-JJ."
+
+#: app.py:720
 msgid "Maturazeugnis erfolgreich validiert"
 msgstr "Diplôme de maturité validé avec succès"
 
-#: app.py:694
+#: app.py:722
 msgid "Es konnte keine passende Registration gefunden werden"
 msgstr "Aucune inscription correspondante n'a été trouvée."
 
@@ -46,32 +50,31 @@ msgstr " Voir : https://github.com/Educa-CH/dmz/blob/main/uploads/sample.dmz.csv
 msgid "Erneut versuchen"
 msgstr "Réessayer"
 
-#: templates/identification.html:4
-msgid "Identification"
-msgstr ""
-
-#: templates/identification.html:8
+#: templates/identification.html:4 templates/identification.html:8
 msgid "Identifikation"
-msgstr "identification"
+msgstr "Identification"
 
 #: templates/identification.html:10 templates/register-mz.html:13
 msgid "Nachname:"
-msgstr "nom de famille"
+msgstr "Nom de famille:"
 
 #: templates/identification.html:13 templates/register-mz.html:16
 msgid "Vorname:"
-msgstr "Prénom"
+msgstr "Prénom:"
 
-#: templates/identification.html:16
+#: templates/identification.html:16 templates/register-mz.html:19
+msgid "Geburtsdatum:"
+msgstr "Date de naissance:"
+
+#: templates/identification.html:19
 msgid "Digitales Maturazeugnis erhalten"
-msgstr "Je souhaite utiliser mon certificat de maturité numérique"
+msgstr "Obtenir son diplôme de maturité numérique"
 
-#: templates/identification.html:21
+#: templates/identification.html:24
 msgid "✔ Person erfolgreich identifiziert."
 msgstr "✔ Personne identifiée avec succès."
 
-#: templates/identification.html:23
-#, fuzzy
+#: templates/identification.html:26
 msgid "✘ Es wurde kein passender Eintrag gefunden."
 msgstr "✘ Aucune entrée correspondante n'a été trouvée."
 
@@ -85,7 +88,7 @@ msgstr "Sélectionner un fichier"
 
 #: templates/index.html:11
 msgid "Keine Datei ausgewählt"
-msgstr "SAucun fichier sélectionné"
+msgstr "Aucun fichier sélectionné"
 
 #: templates/index.html:13
 msgid "Hochladen"
@@ -109,7 +112,7 @@ msgstr "Aucune entrée trouvée dans la base de données !"
 
 #: templates/qr.html:4
 msgid "Maturazeugnis für"
-msgstr "me de fin d'études secondaires pour"
+msgstr "Diplôme de maturité pour"
 
 #: templates/qr.html:5 templates/register-e-id.html:9
 #: templates/student-card.html:9 templates/validation.html:9
@@ -124,13 +127,14 @@ msgstr "Prénom Nom - Date de naissance - Filière - Validé"
 msgid "Registrieren Sie sich mit ihrer E-ID"
 msgstr "Inscrivez-vous avec votre identifiant électronique (E-ID)"
 
+#: templates/register-mz.html:4 templates/register-mz.html:30
 #: templates/register.html:4
-msgid "Registrierung"
-msgstr "Inscrivez-vous avec votre identifiant électronique (E-ID)"
+msgid "Registrieren"
+msgstr "Enregistrement"
 
 #: templates/register.html:8
 msgid "Registrierungsmethode"
-msgstr "méthode d'enregistrement"
+msgstr "Méthode d'enregistrement"
 
 #: templates/register.html:10
 msgid "Sie registrieren sich für den Studiengang:"
@@ -138,7 +142,7 @@ msgstr "Vous vous inscrivez au cursus :"
 
 #: templates/register.html:12
 msgid "Ich möchte mich mit meiner E-ID registrieren"
-msgstr "Je souhaite m'inscrire avec mon identifiant électronique"
+msgstr "Je souhaite m'inscrire avec mon identifiant électronique (E-ID)"
 
 #: templates/register.html:15
 msgid "Wenn Sie nur ein digitales Maturitätszeugnis haben, klicken Sie hier:"
@@ -150,21 +154,27 @@ msgstr ""
 msgid "Ich möchte mein digitales Maturitätszeugnis verwenden"
 msgstr "Je souhaite utiliser mon certificat de maturité numérique"
 
-#: templates/register-mz.html:4 templates/register-mz.html:22
-msgid "Registrieren"
-msgstr "S'inscrire"
-
 #: templates/register-mz.html:8
 msgid "Registrierung abschliessen"
 msgstr "Terminer l'inscription"
 
 #: templates/register-mz.html:10
 msgid "Studiengang"
-msgstr "programme d'études"
+msgstr "Programme d'études"
 
-#: templates/register-mz.html:19
-msgid "Geburtsdatum:"
-msgstr "date de naissance"
+#: templates/register-mz.html:23
+#, fuzzy
+msgid "Foto hochladen"
+msgstr "Télécharger l'exportation"
+
+#: templates/register-mz.html:27
+#, fuzzy
+msgid "Kein Foto ausgewählt"
+msgstr "Aucun fichier sélectionné"
+
+#: templates/register-mz.html:34
+msgid " Dateigrösse zu gross! "
+msgstr "Fichier trop volumineux !"
 
 #: templates/student-card.html:4
 msgid "Studentenkarte"
@@ -229,4 +239,10 @@ msgstr "Validation du certificat de maturité"
 
 #~ msgid "✘ Person not found in the database."
 #~ msgstr ""
+
+#~ msgid "Identification"
+#~ msgstr "Identification"
+
+#~ msgid "Registrierung"
+#~ msgstr "Enregistrement"
 

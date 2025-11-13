@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>{% trans %}Identification{% endtrans %}</title>
+    <title>{% trans %}Identifikation{% endtrans %}</title>
 {% endblock %}
 
 {% block index %}
@@ -12,6 +12,9 @@
 
         <label>{% trans %}Vorname:{% endtrans %}</label>
         <input type="text" name="surname" required>
+
+        <label>{% trans %}Geburtsdatum:{% endtrans %}</label>
+        <input type="text" name="dateOfBirth" required>
 
         <button type="submit">{% trans %}Digitales Maturazeugnis erhalten{% endtrans %}</button>
     </form>

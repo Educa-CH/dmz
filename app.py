@@ -6,7 +6,7 @@ from flask import url_for
 from io import BytesIO
 from io import StringIO
 from werkzeug.exceptions import BadRequest
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 import csv
 import os
 import requests
@@ -23,6 +23,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.secret_key = 'supersupersecretkey'
 app.config['BABEL_DEFAULT_LOCALE'] = 'de'  # default language
+app.config['BABEL_SUPPORTED_LOCALES'] = ['de', 'fr']
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///people.db'
@@ -116,6 +117,13 @@ def get_api_key():
         api_key_cache["expires_at"] = now + data["expires_in"] - 60  # refresh 1 min early
 
     return api_key_cache["key"]
+
+
+@app.route('/set_language/<lang>')
+def set_language(lang):
+    if lang in app.config['BABEL_SUPPORTED_LOCALES']:
+        session['lang'] = lang
+    return redirect(request.referrer or url_for('index'))    
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -393,6 +401,8 @@ def identification():
         surname = request.form.get('surname')
         dateOfBirth = request.form.get('dateOfBirth')
 
+        print("Name: " + name + " Surname: " + surname )
+
         person = Person.query.filter(
             func.lower(Person.surname) == surname.lower(),
             func.lower(Person.name) == name.lower(),
@@ -469,10 +479,27 @@ def register_mz():
         name = request.form.get('name') 
         surname = request.form.get('surname')
         dateOfBirth = request.form.get('dateOfBirth')
+        portrait = request.files['file']
         validation = False
         program = session['program']
         registration_method = 'Manual'
+
+        try:
+            print(datetime.strptime(dateOfBirth, "%Y-%m-%d"))
+            datetime.strptime(dateOfBirth, "%Y-%m-%d")
+        except ValueError:
+            return render_template('register-mz.html', error=_("Datum muss folgendes Format haben YYYY-MM-DD"))
+
+        max_size_bytes = 4 * 1024 * 1024 # 4MiB
+        file_bytes = portrait.read()
+        if len(file_bytes) > max_size_bytes:
+            return render_template('register-mz.html', program=session['program'], file_valid=False)
+
     
+        file_str = base64.b64encode(file_bytes).decode('utf-8')
+        file_str = f"data:image/jpeg;base64,{file_str}"
+
+        print(file_str)
         # Create a new record
         new_registered = Registered(
             name=name,
@@ -480,6 +507,7 @@ def register_mz():
             dateOfBirth=dateOfBirth,
             program=program,
             validation=validation,
+            portrait=file_str,
             registration_method=registration_method
         )
         db.session.add(new_registered)

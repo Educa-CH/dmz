@@ -6,7 +6,7 @@
 
 {% block index %}
     <h1>{% trans %}Registrierung abschliessen{% endtrans %}</h1>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <label>{% trans %}Studiengang{% endtrans %}</label>
         <h3>{{ program }}</h3>
 
@@ -19,6 +19,23 @@
         <label>{% trans %}Geburtsdatum:{% endtrans %}</label>
         <input type="text" name="dateOfBirth" required>
 
+        <label for="file-upload" style="padding: 0.8rem 1.2rem; background-color: #e0e0e0; border: 2px solid #bbb; border-radius: 6px; cursor: pointer; width: fit-content;">
+            {% trans %}Foto hochladen{% endtrans %}
+        </label>
+        <input id="file-upload" type="file" name="file" accept=".jpg" required style="display: none;" onchange="document.getElementById('filename').innerText = this.files[0]?.name || 'Keine Datei ausgewählt';">
+        
+        <span id="filename" style="font-size: 1.05rem; color: #555;">{% trans %}Kein Foto ausgewählt{% endtrans %}</span>
+
+
         <button type="submit">{% trans %}Registrieren{% endtrans %}</button>
+
+        {% if file_valid is not none %}
+            {% if file_valid %}
+                <p style="color: red;">{% trans %} Dateigrösse zu gross! {% endtrans %}</p>
+            {% endif %}
+        {% endif %}
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
     </form>
 {% endblock %}

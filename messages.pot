@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-13 09:40+0100\n"
+"POT-Creation-Date: 2025-11-13 15:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: app.py:692
+#: app.py:491
+msgid "Datum muss folgendes Format haben YYYY-MM-DD"
+msgstr ""
+
+#: app.py:720
 msgid "Maturazeugnis erfolgreich validiert"
 msgstr ""
 
-#: app.py:694
+#: app.py:722
 msgid "Es konnte keine passende Registration gefunden werden"
 msgstr ""
 
@@ -43,11 +47,7 @@ msgstr ""
 msgid "Erneut versuchen"
 msgstr ""
 
-#: templates/identification.html:4
-msgid "Identification"
-msgstr ""
-
-#: templates/identification.html:8
+#: templates/identification.html:4 templates/identification.html:8
 msgid "Identifikation"
 msgstr ""
 
@@ -59,15 +59,19 @@ msgstr ""
 msgid "Vorname:"
 msgstr ""
 
-#: templates/identification.html:16
+#: templates/identification.html:16 templates/register-mz.html:19
+msgid "Geburtsdatum:"
+msgstr ""
+
+#: templates/identification.html:19
 msgid "Digitales Maturazeugnis erhalten"
 msgstr ""
 
-#: templates/identification.html:21
+#: templates/identification.html:24
 msgid "✔ Person erfolgreich identifiziert."
 msgstr ""
 
-#: templates/identification.html:23
+#: templates/identification.html:26
 msgid "✘ Es wurde kein passender Eintrag gefunden."
 msgstr ""
 
@@ -120,8 +124,9 @@ msgstr ""
 msgid "Registrieren Sie sich mit ihrer E-ID"
 msgstr ""
 
+#: templates/register-mz.html:4 templates/register-mz.html:30
 #: templates/register.html:4
-msgid "Registrierung"
+msgid "Registrieren"
 msgstr ""
 
 #: templates/register.html:8
@@ -144,10 +149,6 @@ msgstr ""
 msgid "Ich möchte mein digitales Maturitätszeugnis verwenden"
 msgstr ""
 
-#: templates/register-mz.html:4 templates/register-mz.html:22
-msgid "Registrieren"
-msgstr ""
-
 #: templates/register-mz.html:8
 msgid "Registrierung abschliessen"
 msgstr ""
@@ -156,8 +157,16 @@ msgstr ""
 msgid "Studiengang"
 msgstr ""
 
-#: templates/register-mz.html:19
-msgid "Geburtsdatum:"
+#: templates/register-mz.html:23
+msgid "Foto hochladen"
+msgstr ""
+
+#: templates/register-mz.html:27
+msgid "Kein Foto ausgewählt"
+msgstr ""
+
+#: templates/register-mz.html:34
+msgid " Dateigrösse zu gross! "
 msgstr ""
 
 #: templates/student-card.html:4

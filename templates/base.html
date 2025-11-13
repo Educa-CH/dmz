@@ -13,6 +13,31 @@
     <body>
     <header id="header">
         <h1><a href="/" style="color: white; text-decoration: none;">educa</a> </h1>
+
+        <style>
+        .language-switch {
+            position: absolute;
+            top: 35px;
+            right: 50px;
+        }
+        
+        /* Make links white and remove underline */
+        .language-switch a {
+            color: white;
+            margin: 0 5px; /* small spacing between links */
+        }
+        
+        /* Optional: change color on hover */
+        .language-switch a:hover {
+            color: #ddd;
+        }
+        </style>
+        
+        <div class="language-switch">
+            <a href="{{ url_for('set_language', lang='de') }}">de</a> | 
+            <a href="{{ url_for('set_language', lang='fr') }}">fr</a>
+        </div>
+
     </header>
     <main id="main">
         {% block index %}
