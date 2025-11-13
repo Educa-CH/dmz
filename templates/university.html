@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>University</title>
+{% endblock %}
+
+{% block index %}
+<div class="container" style="max-width: 400px; margin: 40px auto; text-align: center;">
+    <h2>{% trans %}Für einen Bachelorstudiengang einschreiben{% endtrans %}</h2>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+        <form method="post">
+            <button type="submit" name="program" value="Informatik">{% trans %}B.Sc. Informatik{% endtrans %}</button>
+            <button type="submit" name="program" value="Betriebswirtschaftslehre">{% trans %}B.A. Betriebswirtschaftslehre{% endtrans %}</button>
+            <button type="submit" name="program" value="Maschinenbau">{% trans %}B.Eng. Maschinenbau{% endtrans %}</button>
+            <button type="submit" name="program" value="Psychologie">{% trans %}B.Sc. Psychologie{% endtrans %}</button>
+            <button type="submit" name="program" value="Biotechnologie">{% trans %}B.Sc. Biotechnologie{% endtrans %}</button>
+            <button type="submit" name="program" value="Volkswirtschaftslehre">{% trans %}B.A. Volkswirtschaftslehre{% endtrans %}</button>
+            <button type="submit" name="program" value="Architektur">{% trans %}B.A. Architektur{% endtrans %}</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

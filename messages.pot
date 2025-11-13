@@ -1,0 +1,214 @@
+# Translations template for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-11-13 09:40+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: app.py:692
+msgid "Maturazeugnis erfolgreich validiert"
+msgstr ""
+
+#: app.py:694
+msgid "Es konnte keine passende Registration gefunden werden"
+msgstr ""
+
+#: templates/failure.html:4 templates/failure.html:9
+msgid "Fehler"
+msgstr ""
+
+#: templates/failure.html:10
+msgid ""
+"CSV ungültig: Die Struktur des CSV entspricht nicht dem vordefinierten "
+"Dateiformat. Fehler bei "
+msgstr ""
+
+#: templates/failure.html:10
+msgid " Siehe: https://github.com/Educa-CH/dmz/blob/main/uploads/sample.dmz.csv"
+msgstr ""
+
+#: templates/failure.html:11
+msgid "Erneut versuchen"
+msgstr ""
+
+#: templates/identification.html:4
+msgid "Identification"
+msgstr ""
+
+#: templates/identification.html:8
+msgid "Identifikation"
+msgstr ""
+
+#: templates/identification.html:10 templates/register-mz.html:13
+msgid "Nachname:"
+msgstr ""
+
+#: templates/identification.html:13 templates/register-mz.html:16
+msgid "Vorname:"
+msgstr ""
+
+#: templates/identification.html:16
+msgid "Digitales Maturazeugnis erhalten"
+msgstr ""
+
+#: templates/identification.html:21
+msgid "✔ Person erfolgreich identifiziert."
+msgstr ""
+
+#: templates/identification.html:23
+msgid "✘ Es wurde kein passender Eintrag gefunden."
+msgstr ""
+
+#: templates/index.html:4
+msgid "Export hochladen"
+msgstr ""
+
+#: templates/index.html:7
+msgid "Datei auswählen"
+msgstr ""
+
+#: templates/index.html:11
+msgid "Keine Datei ausgewählt"
+msgstr ""
+
+#: templates/index.html:13
+msgid "Hochladen"
+msgstr ""
+
+#: templates/mz-validated.html:4
+msgid "Erfolgreich Registriert"
+msgstr ""
+
+#: templates/mz-validated.html:12
+msgid "Ich möchte eine digitale Studentenkarte erhalten"
+msgstr ""
+
+#: templates/people.html:26 templates/registered.html:26
+msgid "Existierende Datenbankeinträge"
+msgstr ""
+
+#: templates/people.html:34 templates/registered.html:35
+msgid "Keine Datenbankeinträge gefunden!"
+msgstr ""
+
+#: templates/qr.html:4
+msgid "Maturazeugnis für"
+msgstr ""
+
+#: templates/qr.html:5 templates/register-e-id.html:9
+#: templates/student-card.html:9 templates/validation.html:9
+msgid "Scannen Sie den QR-Code mit ihrer Wallet!"
+msgstr ""
+
+#: templates/registered.html:27
+msgid "Vorname Name - Geb. Datum - Studiengang - Validiert"
+msgstr ""
+
+#: templates/register-e-id.html:8
+msgid "Registrieren Sie sich mit ihrer E-ID"
+msgstr ""
+
+#: templates/register.html:4
+msgid "Registrierung"
+msgstr ""
+
+#: templates/register.html:8
+msgid "Registrierungsmethode"
+msgstr ""
+
+#: templates/register.html:10
+msgid "Sie registrieren sich für den Studiengang:"
+msgstr ""
+
+#: templates/register.html:12
+msgid "Ich möchte mich mit meiner E-ID registrieren"
+msgstr ""
+
+#: templates/register.html:15
+msgid "Wenn Sie nur ein digitales Maturitätszeugnis haben, klicken Sie hier:"
+msgstr ""
+
+#: templates/register.html:17
+msgid "Ich möchte mein digitales Maturitätszeugnis verwenden"
+msgstr ""
+
+#: templates/register-mz.html:4 templates/register-mz.html:22
+msgid "Registrieren"
+msgstr ""
+
+#: templates/register-mz.html:8
+msgid "Registrierung abschliessen"
+msgstr ""
+
+#: templates/register-mz.html:10
+msgid "Studiengang"
+msgstr ""
+
+#: templates/register-mz.html:19
+msgid "Geburtsdatum:"
+msgstr ""
+
+#: templates/student-card.html:4
+msgid "Studentenkarte"
+msgstr ""
+
+#: templates/student-card.html:8
+msgid "Studentenkarte für "
+msgstr ""
+
+#: templates/success.html:4
+msgid "Erfolgreich ausgestellt"
+msgstr ""
+
+#: templates/success.html:10
+msgid "Weiteres digitales Maturazeugnis erstellen"
+msgstr ""
+
+#: templates/university.html:9
+msgid "Für einen Bachelorstudiengang einschreiben"
+msgstr ""
+
+#: templates/university.html:12
+msgid "B.Sc. Informatik"
+msgstr ""
+
+#: templates/university.html:13
+msgid "B.A. Betriebswirtschaftslehre"
+msgstr ""
+
+#: templates/university.html:14
+msgid "B.Eng. Maschinenbau"
+msgstr ""
+
+#: templates/university.html:15
+msgid "B.Sc. Psychologie"
+msgstr ""
+
+#: templates/university.html:16
+msgid "B.Sc. Biotechnologie"
+msgstr ""
+
+#: templates/university.html:17
+msgid "B.A. Volkswirtschaftslehre"
+msgstr ""
+
+#: templates/university.html:18
+msgid "B.A. Architektur"
+msgstr ""
+
+#: templates/validation.html:8
+msgid "Validieren des Maturazeugnis"
+msgstr ""
+

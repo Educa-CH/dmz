@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>Register</title>
+    <title>{% trans %}Registrieren{% endtrans %}</title>
 {% endblock %}
 
 {% block index %}
-    <h1>Registrierung abschliessen</h1>
+    <h1>{% trans %}Registrierung abschliessen{% endtrans %}</h1>
     <form method="POST">
-        <label>Studiengang</label>
+        <label>{% trans %}Studiengang{% endtrans %}</label>
         <h3>{{ program }}</h3>
 
-        <label>Nachname:</label>
+        <label>{% trans %}Nachname:{% endtrans %}</label>
         <input type="text" name="name" required>
 
-        <label>Vorname:</label>
+        <label>{% trans %}Vorname:{% endtrans %}</label>
         <input type="text" name="surname" required>
 
-        <label>Geburtsdatum:</label>
+        <label>{% trans %}Geburtsdatum:{% endtrans %}</label>
         <input type="text" name="dateOfBirth" required>
 
-        <button type="submit">Registrieren</button>
+        <button type="submit">{% trans %}Registrieren{% endtrans %}</button>
     </form>
 {% endblock %}

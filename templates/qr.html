@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block index %}
-    <h1>Maturazeugnis für {{ person.name }} {{ person.surname }}</h1><br>
-    <h2>Scannen Sie den QR-Code mit ihrer Wallet!</h2>
+    <h1>{% trans %}Maturazeugnis für{% endtrans %} {{ person.name }} {{ person.surname }}</h1><br>
+    <h2>{% trans %}Scannen Sie den QR-Code mit ihrer Wallet!{% endtrans %}</h2>
 
     <!--<p>URL: <a href="{{ person.url }}">{{ person.url }}</a></p> -->
     <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code" style="width: 250px; height: 250px;">

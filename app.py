@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
+from flask_babel import Babel, _
 from sqlalchemy import func, Text
 from flask import url_for
 from io import BytesIO
@@ -21,6 +22,8 @@ import random
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.secret_key = 'supersupersecretkey'
+app.config['BABEL_DEFAULT_LOCALE'] = 'de'  # default language
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///people.db'
 db = SQLAlchemy(app)
@@ -53,6 +56,16 @@ api_key_cache = {
 
 # Stelle sicher, dass der Upload-Ordner existiert
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+def get_locale():
+    # 1. Check query parameter first
+    lang = request.args.get('lang')
+    if lang:
+        session['lang'] = lang  # save in session
+    # 2. Check session
+    return session.get('lang', app.config['BABEL_DEFAULT_LOCALE'])
+
+babel = Babel(app, locale_selector=get_locale)
 
 # check the structure of newly uploaded csv
 def csv_check(csv_string):
@@ -603,8 +616,6 @@ def validation():
     
     url = json.loads(proofRequest)['url']
 
-    print(url)
-
     # Generate QR code
     qr = qrcode.QRCode(box_size=10, border=4)
     qr.add_data(url)
@@ -678,9 +689,9 @@ def mz_validated(proof_id):
 
         db.session.commit()
 
-        return render_template('mz-validated.html',status='success', id=registered.id ,prompt='Maturazeugnis erfolgreich validiert')
+        return render_template('mz-validated.html',status='success', id=registered.id ,prompt=_('Maturazeugnis erfolgreich validiert'))
     else:
-        return render_template('mz-validated.html',status='warning', prompt='Es konnte keine passende Registration gefunden werden')
+        return render_template('mz-validated.html',status='warning', prompt=_('Es konnte keine passende Registration gefunden werden'))
     
 @app.route('/issue-study-card/<id>')
 def issue_study_card(id):

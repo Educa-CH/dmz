@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
+{% block head %}
+    <title>{% trans %}Studentenkarte{% endtrans %}</title>
+{% endblock %}
+
 {% block index %}
-    <h1>Studentenkarte für {{ name }} {{ surname }}</h1><br>
-    <h2>Scannen Sie den QR-Code mit ihrer Wallet!</h2>
+    <h1>{% trans %}Studentenkarte für {% endtrans %} {{ name }} {{ surname }}</h1><br>
+    <h2>{% trans %}Scannen Sie den QR-Code mit ihrer Wallet!{% endtrans %}</h2>
 
     <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code" style="width: 250px; height: 250px;">
 {% endblock %}

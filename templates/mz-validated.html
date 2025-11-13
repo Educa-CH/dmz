@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <title>Success</title>
+    <title>{% trans %}Erfolgreich Registriert{% endtrans %}</title>
 {% endblock %}
 
 {% block index %}
@@ -9,7 +9,7 @@
             <div class="success-container">
                 <h2><span style="color: green;">✔</span> {{ prompt }}</h2>
                 <form action="/issue-study-card/{{ id }}"">
-                    <button type="submit">Ich möchte eine digitale Studentenkarte erhalten</button>
+                    <button type="submit">{% trans %}Ich möchte eine digitale Studentenkarte erhalten{% endtrans %}</button>
                 </form>
             </div>
         {% elif status == 'warning' %}

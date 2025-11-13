@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>{% trans %}Erfolgreich ausgestellt{% endtrans %}</title>
+{% endblock %}
+
+{% block index %}
+    <div class="success-container">
+        <h2><span style="color: green;">✔</span> {{ prompt }}</h2>
+        <a href="{{ url_for('upload_file') }}" class="button-link">{% trans %}Weiteres digitales Maturazeugnis erstellen{% endtrans %}</a>
+    </div>
+{% endblock %}

@@ -23,8 +23,8 @@
 {% endblock %}
 
 {% block index %}
-<h1>Existierende Datenbankeinträge</h1>
-<h3>Vorname Name - Geb. Datum - Studiengang - Validiert</h3>
+<h1>{% trans %}Existierende Datenbankeinträge{% endtrans %}</h1>
+<h3>{% trans %}Vorname Name - Geb. Datum - Studiengang - Validiert{% endtrans %}</h3>
 {% if registered %}
     <ul>
         {% for person in registered %}
@@ -32,6 +32,6 @@
         {% endfor %}
     </ul>
 {% else %}
-    <p>No people found in the database.</p>
+    <p>{% trans %}Keine Datenbankeinträge gefunden!{% endtrans %}</p>
 {% endif %}
 {% endblock %}

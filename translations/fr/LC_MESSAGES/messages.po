@@ -1,0 +1,232 @@
+# French translations for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-11-13 09:40+0100\n"
+"PO-Revision-Date: 2025-11-13 08:45+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: app.py:692
+msgid "Maturazeugnis erfolgreich validiert"
+msgstr "Diplôme de maturité validé avec succès"
+
+#: app.py:694
+msgid "Es konnte keine passende Registration gefunden werden"
+msgstr "Aucune inscription correspondante n'a été trouvée."
+
+#: templates/failure.html:4 templates/failure.html:9
+msgid "Fehler"
+msgstr "Erreur"
+
+#: templates/failure.html:10
+msgid ""
+"CSV ungültig: Die Struktur des CSV entspricht nicht dem vordefinierten "
+"Dateiformat. Fehler bei "
+msgstr ""
+"CSV invalide : la structure du CSV ne correspond pas au format de fichier"
+" prédéfini. Erreur lors de l' "
+
+#: templates/failure.html:10
+msgid " Siehe: https://github.com/Educa-CH/dmz/blob/main/uploads/sample.dmz.csv"
+msgstr " Voir : https://github.com/Educa-CH/dmz/blob/main/uploads/sample.dmz.csv »"
+
+#: templates/failure.html:11
+msgid "Erneut versuchen"
+msgstr "Réessayer"
+
+#: templates/identification.html:4
+msgid "Identification"
+msgstr ""
+
+#: templates/identification.html:8
+msgid "Identifikation"
+msgstr "identification"
+
+#: templates/identification.html:10 templates/register-mz.html:13
+msgid "Nachname:"
+msgstr "nom de famille"
+
+#: templates/identification.html:13 templates/register-mz.html:16
+msgid "Vorname:"
+msgstr "Prénom"
+
+#: templates/identification.html:16
+msgid "Digitales Maturazeugnis erhalten"
+msgstr "Je souhaite utiliser mon certificat de maturité numérique"
+
+#: templates/identification.html:21
+msgid "✔ Person erfolgreich identifiziert."
+msgstr "✔ Personne identifiée avec succès."
+
+#: templates/identification.html:23
+#, fuzzy
+msgid "✘ Es wurde kein passender Eintrag gefunden."
+msgstr "✘ Aucune entrée correspondante n'a été trouvée."
+
+#: templates/index.html:4
+msgid "Export hochladen"
+msgstr "Télécharger l'exportation"
+
+#: templates/index.html:7
+msgid "Datei auswählen"
+msgstr "Sélectionner un fichier"
+
+#: templates/index.html:11
+msgid "Keine Datei ausgewählt"
+msgstr "SAucun fichier sélectionné"
+
+#: templates/index.html:13
+msgid "Hochladen"
+msgstr "Télécharger"
+
+#: templates/mz-validated.html:4
+msgid "Erfolgreich Registriert"
+msgstr "Inscription réussie"
+
+#: templates/mz-validated.html:12
+msgid "Ich möchte eine digitale Studentenkarte erhalten"
+msgstr "Je souhaite obtenir une carte d'étudiant numérique."
+
+#: templates/people.html:26 templates/registered.html:26
+msgid "Existierende Datenbankeinträge"
+msgstr "Entrées existantes dans la base de données"
+
+#: templates/people.html:34 templates/registered.html:35
+msgid "Keine Datenbankeinträge gefunden!"
+msgstr "Aucune entrée trouvée dans la base de données !"
+
+#: templates/qr.html:4
+msgid "Maturazeugnis für"
+msgstr "me de fin d'études secondaires pour"
+
+#: templates/qr.html:5 templates/register-e-id.html:9
+#: templates/student-card.html:9 templates/validation.html:9
+msgid "Scannen Sie den QR-Code mit ihrer Wallet!"
+msgstr "Scannez le code QR avec votre portefeuille !"
+
+#: templates/registered.html:27
+msgid "Vorname Name - Geb. Datum - Studiengang - Validiert"
+msgstr "Prénom Nom - Date de naissance - Filière - Validé"
+
+#: templates/register-e-id.html:8
+msgid "Registrieren Sie sich mit ihrer E-ID"
+msgstr "Inscrivez-vous avec votre identifiant électronique (E-ID)"
+
+#: templates/register.html:4
+msgid "Registrierung"
+msgstr "Inscrivez-vous avec votre identifiant électronique (E-ID)"
+
+#: templates/register.html:8
+msgid "Registrierungsmethode"
+msgstr "méthode d'enregistrement"
+
+#: templates/register.html:10
+msgid "Sie registrieren sich für den Studiengang:"
+msgstr "Vous vous inscrivez au cursus :"
+
+#: templates/register.html:12
+msgid "Ich möchte mich mit meiner E-ID registrieren"
+msgstr "Je souhaite m'inscrire avec mon identifiant électronique"
+
+#: templates/register.html:15
+msgid "Wenn Sie nur ein digitales Maturitätszeugnis haben, klicken Sie hier:"
+msgstr ""
+"Si vous disposez uniquement d'un certificat de maturité numérique, "
+"cliquez ici :"
+
+#: templates/register.html:17
+msgid "Ich möchte mein digitales Maturitätszeugnis verwenden"
+msgstr "Je souhaite utiliser mon certificat de maturité numérique"
+
+#: templates/register-mz.html:4 templates/register-mz.html:22
+msgid "Registrieren"
+msgstr "S'inscrire"
+
+#: templates/register-mz.html:8
+msgid "Registrierung abschliessen"
+msgstr "Terminer l'inscription"
+
+#: templates/register-mz.html:10
+msgid "Studiengang"
+msgstr "programme d'études"
+
+#: templates/register-mz.html:19
+msgid "Geburtsdatum:"
+msgstr "date de naissance"
+
+#: templates/student-card.html:4
+msgid "Studentenkarte"
+msgstr "Carte d'étudiant"
+
+#: templates/student-card.html:8
+msgid "Studentenkarte für "
+msgstr "Carte d'étudiant pour"
+
+#: templates/success.html:4
+msgid "Erfolgreich ausgestellt"
+msgstr "Inscription réussie"
+
+#: templates/success.html:10
+msgid "Weiteres digitales Maturazeugnis erstellen"
+msgstr "Créer un autre certificat de maturité numérique"
+
+#: templates/university.html:9
+msgid "Für einen Bachelorstudiengang einschreiben"
+msgstr "S'inscrire à un programme de licence"
+
+#: templates/university.html:12
+msgid "B.Sc. Informatik"
+msgstr ""
+
+#: templates/university.html:13
+msgid "B.A. Betriebswirtschaftslehre"
+msgstr ""
+
+#: templates/university.html:14
+msgid "B.Eng. Maschinenbau"
+msgstr ""
+
+#: templates/university.html:15
+msgid "B.Sc. Psychologie"
+msgstr ""
+
+#: templates/university.html:16
+msgid "B.Sc. Biotechnologie"
+msgstr ""
+
+#: templates/university.html:17
+msgid "B.A. Volkswirtschaftslehre"
+msgstr ""
+
+#: templates/university.html:18
+msgid "B.A. Architektur"
+msgstr ""
+
+#: templates/validation.html:8
+msgid "Validieren des Maturazeugnis"
+msgstr "Validation du certificat de maturité"
+
+#~ msgid "Keine Datenbankeinträge gefunden"
+#~ msgstr "Aucune entrée trouvée dans la base de données"
+
+#~ msgid "Success"
+#~ msgstr ""
+
+#~ msgid "✔ Person found in the database."
+#~ msgstr ""
+
+#~ msgid "✘ Person not found in the database."
+#~ msgstr ""
+

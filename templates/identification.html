@@ -1,26 +1,26 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <title>Identification</title>
+    <title>{% trans %}Identification{% endtrans %}</title>
 {% endblock %}
 
 {% block index %}
-    <h1>Identifikation</h1>
+    <h1>{% trans %}Identifikation{% endtrans %}</h1>
     <form method="POST">
-        <label>Nachname:</label>
+        <label>{% trans %}Nachname:{% endtrans %}</label>
         <input type="text" name="name" required>
 
-        <label>Vorname:</label>
+        <label>{% trans %}Vorname:{% endtrans %}</label>
         <input type="text" name="surname" required>
 
-        <button type="submit">Digitales Maturazeugnis erhalten</button>
+        <button type="submit">{% trans %}Digitales Maturazeugnis erhalten{% endtrans %}</button>
     </form>
 
     {% if person_exists is not none %}
         {% if person_exists %}
-            <p style="color: green;">✔ Person found in the database.</p>
+            <p style="color: green;">{% trans %}✔ Person erfolgreich identifiziert.{% endtrans %}</p>
         {% else %}
-            <p style="color: red;">✘ Person not found in the database.</p>
+            <p style="color: red;">{% trans %}✘ Es wurde kein passender Eintrag gefunden.{% endtrans %}</p>
         {% endif %}
     {% endif %}
 {% endblock %}
