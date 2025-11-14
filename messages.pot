@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-13 15:44+0100\n"
+"POT-Creation-Date: 2025-11-14 07:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: app.py:491
+#: app.py:495
 msgid "Datum muss folgendes Format haben YYYY-MM-DD"
 msgstr ""
 
-#: app.py:720
+#: app.py:724
 msgid "Maturazeugnis erfolgreich validiert"
 msgstr ""
 
-#: app.py:722
+#: app.py:726
 msgid "Es konnte keine passende Registration gefunden werden"
 msgstr ""
 
@@ -97,6 +97,22 @@ msgstr ""
 
 #: templates/mz-validated.html:12
 msgid "Ich möchte eine digitale Studentenkarte erhalten"
+msgstr ""
+
+#: templates/overview.html:4 templates/overview.html:9
+msgid "Übersicht"
+msgstr ""
+
+#: templates/overview.html:13
+msgid "Maturazeugnis ausstellen"
+msgstr ""
+
+#: templates/overview.html:17
+msgid "Für einen Studiengang registrieren"
+msgstr ""
+
+#: templates/overview.html:22
+msgid "Beta E-ID erhalten"
 msgstr ""
 
 #: templates/people.html:26 templates/registered.html:26

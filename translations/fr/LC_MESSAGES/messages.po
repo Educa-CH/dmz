@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-13 15:44+0100\n"
+"POT-Creation-Date: 2025-11-14 07:21+0100\n"
 "PO-Revision-Date: 2025-11-13 08:45+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: app.py:491
+#: app.py:495
 msgid "Datum muss folgendes Format haben YYYY-MM-DD"
 msgstr "La date doit être au format AAAA-MM-JJ."
 
-#: app.py:720
+#: app.py:724
 msgid "Maturazeugnis erfolgreich validiert"
 msgstr "Diplôme de maturité validé avec succès"
 
-#: app.py:722
+#: app.py:726
 msgid "Es konnte keine passende Registration gefunden werden"
 msgstr "Aucune inscription correspondante n'a été trouvée."
 
@@ -101,6 +101,24 @@ msgstr "Inscription réussie"
 #: templates/mz-validated.html:12
 msgid "Ich möchte eine digitale Studentenkarte erhalten"
 msgstr "Je souhaite obtenir une carte d'étudiant numérique."
+
+#: templates/overview.html:4 templates/overview.html:9
+msgid "Übersicht"
+msgstr "Vue d'ensemble"
+
+#: templates/overview.html:13
+#, fuzzy
+msgid "Maturazeugnis ausstellen"
+msgstr "Délivrer un certificat de maturité"
+
+#: templates/overview.html:17
+#, fuzzy
+msgid "Für einen Studiengang registrieren"
+msgstr "S'inscrire à un programme de licence"
+
+#: templates/overview.html:22
+msgid "Beta E-ID erhalten"
+msgstr "Obtenir une identité électronique bêta (Beta E-ID)"
 
 #: templates/people.html:26 templates/registered.html:26
 msgid "Existierende Datenbankeinträge"

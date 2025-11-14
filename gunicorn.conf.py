@@ -1,4 +1,4 @@
-bind = "dmz.educa.ch:443"
+bind = "dmz.educa.ch:8443"
 certfile = "/usr/local/share/certs/educa.ch/fullchain.pem"
 keyfile = "/usr/local/share/certs/educa.ch/privkey.pem"
 workers = 2  # Number of worker processes to spawn

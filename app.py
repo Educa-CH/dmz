@@ -123,7 +123,11 @@ def get_api_key():
 def set_language(lang):
     if lang in app.config['BABEL_SUPPORTED_LOCALES']:
         session['lang'] = lang
-    return redirect(request.referrer or url_for('index'))    
+    return redirect(request.referrer or url_for('index'))  
+
+@app.route('/overview')
+def overview():
+    return render_template('overview.html')   
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
