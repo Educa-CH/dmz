@@ -107,12 +107,10 @@ msgid "Übersicht"
 msgstr "Vue d'ensemble"
 
 #: templates/overview.html:13
-#, fuzzy
 msgid "Maturazeugnis ausstellen"
 msgstr "Délivrer un certificat de maturité"
 
 #: templates/overview.html:17
-#, fuzzy
 msgid "Für einen Studiengang registrieren"
 msgstr "S'inscrire à un programme de licence"
 
