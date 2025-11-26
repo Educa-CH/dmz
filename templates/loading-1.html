@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>...</title>
+{% endblock %}
+
+{% block index %}
+    <div>
+        <h1 style="text-align:center;">{% trans %}Validieren{% endtrans %}</h1>
+        <img src="{{ url_for('static', filename='images/loading.gif') }}" 
+             alt="Validation Loading" 
+             style="width:300px; height:auto;">
+    </div>
+{% endblock %}
+
+{% block scripts %}
+     <script>
+        // Nach 5 Sekunden weiterleiten
+        setTimeout(function(){
+            window.location.href = "/validation";
+        }, 3000);
+    </script>
+{% endblock %}

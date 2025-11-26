@@ -118,6 +118,41 @@ def get_api_key():
 
     return api_key_cache["key"]
 
+def to_isoformat(value):
+    """
+    Convert any input to a date string 'YYYY-MM-DD' for DB comparison.
+    """
+    if value is None:
+        return None
+
+    if isinstance(value, date):
+        return value.isoformat()  # date.isoformat() -> 'YYYY-MM-DD'
+
+    if isinstance(value, datetime):
+        return value.date().isoformat()  # drop time
+
+    if isinstance(value, (int, float)):
+        return datetime.fromtimestamp(value).date().isoformat()
+
+    if isinstance(value, str):
+        # Try ISO format first
+        try:
+            dt = datetime.fromisoformat(value)
+            return dt.date().isoformat()
+        except ValueError:
+            pass
+        
+        # Common string formats
+        for fmt in ("%Y-%m-%d", "%d-%m-%Y", "%m/%d/%Y", "%Y/%m/%d", "%d.%m.%Y"):
+            try:
+                dt = datetime.strptime(value, fmt)
+                return dt.date().isoformat()
+            except ValueError:
+                continue
+        
+        raise ValueError(f"Unrecognized date format: {value}")
+
+    raise TypeError(f"Cannot convert type {type(value)} to DB date string")
 
 @app.route('/set_language/<lang>')
 def set_language(lang):
@@ -127,7 +162,11 @@ def set_language(lang):
 
 @app.route('/overview')
 def overview():
-    return render_template('overview.html')   
+    return render_template('overview.html')  
+
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')   
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -704,16 +743,19 @@ def mz_validated(proof_id):
     # Create a dictionary of key-value pairs
     claims_dict = {claim['schema']['key']: claim['value'] for claim in proof_input['claims']}
 
-    print(claims_dict['Vorname'])
-
     name = claims_dict['Vorname']
     surname = claims_dict['Nachname']
     dateOfBirth = claims_dict['Geburtsdatum']
+
+    dateOfBirth = to_isoformat(dateOfBirth)
+
+    print(dateOfBirth)
     
     #TODO also compare date of Birth or Heimatort
     registered = Registered.query.filter(
         func.lower(Registered.name) == surname.lower(),
-        func.lower(Registered.surname) == name.lower()
+        func.lower(Registered.surname) == name.lower(),
+        Registered.dateOfBirth == dateOfBirth
     ).first()
 
     if registered:
@@ -730,6 +772,9 @@ def issue_study_card(id):
     accessToken = get_api_key()
 
     registered = Registered.query.get(id)
+
+    if datetime.fromisoformat(registered.dateOfBirth).year < 1900:
+        return render_template('student-card.html', error=_("Geburtsdatum ungültig"))
 
     matriculation_number = f"25-{random.randint(100, 999)}-{random.randint(100, 999)}"
     barcode = random.randint(1000000, 9999999)
@@ -822,6 +867,14 @@ def issue_study_card(id):
     qr_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
 
     return render_template('student-card.html', name=registered.name, surname=registered.surname, qr_code_base64=qr_base64)
+
+@app.route('/loading')
+def laden():
+    return render_template('loading-1.html')  
+
+@app.route('/validieren/<proof_id>')
+def validieren(proof_id):
+    return render_template('loading-2.html', proof_id=proof_id)         
 
 
 if __name__ == '__main__':

@@ -5,8 +5,14 @@
 {% endblock %}
 
 {% block index %}
-    <h1>{% trans %}Studentenkarte für {% endtrans %} {{ name }} {{ surname }}</h1><br>
-    <h2>{% trans %}Scannen Sie den QR-Code mit ihrer Wallet!{% endtrans %}</h2>
-
-    <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code" style="width: 250px; height: 250px;">
+    {% if error %}
+        <div class="success-container">
+            <h1>{% trans %}Fehler{% endtrans %}</h1>
+            <h3><span style="color: red;">✘</span>error</h3>
+        </div>
+    {% else %}
+            <h1>{% trans %}Studentenkarte für {% endtrans %} {{ name }} {{ surname }}</h1><br>
+            <h2>{% trans %}Scannen Sie den QR-Code mit ihrer Wallet!{% endtrans %}</h2>
+            <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code" style="width: 250px; height: 250px;">
+    {% endif %}
 {% endblock %}

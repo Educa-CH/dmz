@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-14 07:21+0100\n"
+"POT-Creation-Date: 2025-11-26 15:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: app.py:495
-msgid "Datum muss folgendes Format haben YYYY-MM-DD"
+#: templates/admin.html:4 templates/admin.html:9
+msgid "Administration"
 msgstr ""
 
-#: app.py:724
-msgid "Maturazeugnis erfolgreich validiert"
+#: templates/admin.html:13
+msgid "Abholbare Maturazeugnisse "
 msgstr ""
 
-#: app.py:726
-msgid "Es konnte keine passende Registration gefunden werden"
+#: templates/admin.html:17
+msgid "Registrierte Studierende"
 msgstr ""
 
 #: templates/failure.html:4 templates/failure.html:9
+#: templates/student-card.html:10
 msgid "Fehler"
 msgstr ""
 
@@ -91,6 +92,14 @@ msgstr ""
 msgid "Hochladen"
 msgstr ""
 
+#: templates/loading-1.html:9
+msgid "Validieren"
+msgstr ""
+
+#: templates/loading-2.html:9
+msgid "Zeugnis prüfen und mit der Registrierten-Datenbank abgleichen."
+msgstr ""
+
 #: templates/mz-validated.html:4
 msgid "Erfolgreich Registriert"
 msgstr ""
@@ -108,10 +117,14 @@ msgid "Maturazeugnis ausstellen"
 msgstr ""
 
 #: templates/overview.html:17
+msgid "Maturazeugnis erhalten"
+msgstr ""
+
+#: templates/overview.html:21
 msgid "Für einen Studiengang registrieren"
 msgstr ""
 
-#: templates/overview.html:22
+#: templates/overview.html:26
 msgid "Beta E-ID erhalten"
 msgstr ""
 
@@ -128,7 +141,7 @@ msgid "Maturazeugnis für"
 msgstr ""
 
 #: templates/qr.html:5 templates/register-e-id.html:9
-#: templates/student-card.html:9 templates/validation.html:9
+#: templates/student-card.html:15 templates/validation.html:9
 msgid "Scannen Sie den QR-Code mit ihrer Wallet!"
 msgstr ""
 
@@ -189,7 +202,7 @@ msgstr ""
 msgid "Studentenkarte"
 msgstr ""
 
-#: templates/student-card.html:8
+#: templates/student-card.html:14
 msgid "Studentenkarte für "
 msgstr ""
 
@@ -235,5 +248,21 @@ msgstr ""
 
 #: templates/validation.html:8
 msgid "Validieren des Maturazeugnis"
+msgstr ""
+
+#: app.py:534
+msgid "Datum muss folgendes Format haben YYYY-MM-DD"
+msgstr ""
+
+#: app.py:766
+msgid "Maturazeugnis erfolgreich validiert"
+msgstr ""
+
+#: app.py:768
+msgid "Es konnte keine passende Registration gefunden werden"
+msgstr ""
+
+#: app.py:777
+msgid "Geburtsdatum ungültig"
 msgstr ""
 

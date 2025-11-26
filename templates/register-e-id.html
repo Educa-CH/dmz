@@ -21,7 +21,7 @@ function checkProofStatus() {
         .then(response => response.json())
         .then(data => {
             if (data.state === "ACCEPTED") {
-                window.location.href = `/validation`;
+                window.location.href = `/loading`;
             } else {
                 setTimeout(checkProofStatus, 1000);  // retry in 1s
             }

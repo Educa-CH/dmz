@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>{% trans %}Administration{% endtrans %}</title>
+{% endblock %}
+
+{% block index %}
+    <div class="container">
+    <h2>{% trans %}Administration{% endtrans %}</h2>
+
+    <div class="tile-container">
+        <a class="tile" href="/people">
+            {% trans %}Abholbare Maturazeugnisse {% endtrans %}
+        </a>
+
+        <a class="tile" href="/registered">
+            {% trans %}Registrierte Studierende{% endtrans %}
+        </a>
+    </div>
+</div>
+{% endblock %}
