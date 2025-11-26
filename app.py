@@ -104,7 +104,7 @@ def get_api_key():
             "https://keycloak.trial.procivis-one.com/realms/trial/protocol/openid-connect/token",
             data={
                 "client_id": "one-educa",
-                "client_secret": "Y1oOzalI4idJoN9pIdrYpMFuSL0UB8hh",
+                "client_secret": "client_secret",
                 "grant_type": "client_credentials",
                 "scope":"openid"
             },
