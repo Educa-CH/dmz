@@ -8,7 +8,7 @@
     {% if error %}
         <div class="success-container">
             <h1>{% trans %}Fehler{% endtrans %}</h1>
-            <h3><span style="color: red;">✘</span>error</h3>
+            <h3><span style="color: red;">✘</span>{{ error }}</h3>
         </div>
     {% else %}
             <h1>{% trans %}Studentenkarte für {% endtrans %} {{ name }} {{ surname }}</h1><br>
