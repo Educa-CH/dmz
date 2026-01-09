@@ -19,6 +19,22 @@
         border-radius: 5px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
+
+    .delete-btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .delete-btn:hover {
+        background: #c0392b;
+    }
 </style>
 {% endblock %}
 
@@ -31,6 +47,9 @@
             <li>{{ person.name }} {{ person.surname }} - {{person.dateOfBirth}} - {{ person.program }} - {{ '✅' if person.validation else '❌' }} - {{ '✍️' if person.registration_method == 'Manual' else '🆔' }}</li>
         {% endfor %}
     </ul>
+    <form method="POST" action="{{ url_for('delete_all') }}">
+        <button type="submit" class="delete-btn">{% trans %}Alle Einträge löschen{% endtrans %}</button>
+    </form>
 {% else %}
     <p>{% trans %}Keine Datenbankeinträge gefunden!{% endtrans %}</p>
 {% endif %}

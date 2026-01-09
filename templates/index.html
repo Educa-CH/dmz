@@ -12,4 +12,12 @@
 
         <button type="submit" style="padding: 0.8rem 1.5rem; font-size: 1.1rem; border-radius: 6px;">{% trans %}Hochladen{% endtrans %}</button>
     </form>
+    <h2>{% trans %}Beispiel{% endtrans %}</h2>
+    <div style="text-align: center; margin-top: 1rem;">
+        <!-- Download button styled like Datei auswählen -->
+        <a href="{{ url_for('download_sample') }}" 
+           style="display: inline-block; padding: 0.8rem 1.2rem; background-color: #e0e0e0; border: 2px solid #bbb; border-radius: 6px; cursor: pointer; font-family: 'EducaSans', sans-serif; width: fit-content; text-decoration: none; color: inherit;">
+            {% trans %}Beispieldatei herunterladen{% endtrans %}
+        </a>
+    </div>
 {% endblock %}

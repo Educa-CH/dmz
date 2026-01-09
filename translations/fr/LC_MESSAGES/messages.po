@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-26 15:29+0100\n"
+"POT-Creation-Date: 2026-01-09 07:58+0100\n"
 "PO-Revision-Date: 2025-11-13 08:45+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -95,6 +95,14 @@ msgstr "Aucun fichier sélectionné"
 msgid "Hochladen"
 msgstr "Télécharger"
 
+#: templates/index.html:15
+msgid "Beispiel"
+msgstr "Exemple"
+
+#: templates/index.html:20
+msgid "Beispieldatei herunterladen"
+msgstr "Télécharger le fichier exemple"
+
 #: templates/loading-1.html:9
 msgid "Validieren"
 msgstr "Validation"
@@ -131,11 +139,11 @@ msgstr "S'inscrire à une filière d'études"
 msgid "Beta E-ID erhalten"
 msgstr "Obtenir une identité électronique bêta (Beta E-ID)"
 
-#: templates/people.html:26 templates/registered.html:26
+#: templates/people.html:26 templates/registered.html:42
 msgid "Existierende Datenbankeinträge"
 msgstr "Entrées existantes dans la base de données"
 
-#: templates/people.html:34 templates/registered.html:35
+#: templates/people.html:34 templates/registered.html:54
 msgid "Keine Datenbankeinträge gefunden!"
 msgstr "Aucune entrée trouvée dans la base de données!"
 
@@ -148,9 +156,13 @@ msgstr "Certificat de maturité pour"
 msgid "Scannen Sie den QR-Code mit ihrer Wallet!"
 msgstr "Scannez le code QR avec votre portefeuille!"
 
-#: templates/registered.html:27
+#: templates/registered.html:43
 msgid "Vorname Name - Geb. Datum - Studiengang - Validiert"
 msgstr "Prénom Nom - Date de naissance - Filière - Validé"
+
+#: templates/registered.html:51
+msgid "Alle Einträge löschen"
+msgstr "Supprimer toutes les entrées"
 
 #: templates/register-e-id.html:8
 msgid "Registrieren Sie sich mit ihrer E-ID"

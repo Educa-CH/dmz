@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify, session
+from flask import Flask, render_template, request, redirect, jsonify, session, send_from_directory, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_babel import Babel, _
 from sqlalchemy import func, Text
@@ -104,7 +104,7 @@ def get_api_key():
             "https://keycloak.trial.procivis-one.com/realms/trial/protocol/openid-connect/token",
             data={
                 "client_id": "one-educa",
-                "client_secret": "client_secret",
+                "client_secret": "Y1oOzalI4idJoN9pIdrYpMFuSL0UB8hh",
                 "grant_type": "client_credentials",
                 "scope":"openid"
             },
@@ -874,7 +874,19 @@ def laden():
 
 @app.route('/validieren/<proof_id>')
 def validieren(proof_id):
-    return render_template('loading-2.html', proof_id=proof_id)         
+    return render_template('loading-2.html', proof_id=proof_id)
+
+@app.route('/delete_all', methods=['POST'])
+def delete_all():
+    # Delete all entries
+    Registered.query.delete()
+    db.session.commit()
+    return redirect(url_for('registered'))   
+
+@app.route('/download_sample')
+def download_sample():
+    # Serve the sample.dmz.csv file from your configured uploads folder
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], 'sample.dmz.csv', as_attachment=True)      
 
 
 if __name__ == '__main__':

@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2025 ORGANIZATION
+# Copyright (C) 2026 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-26 15:29+0100\n"
+"POT-Creation-Date: 2026-01-09 07:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,6 +92,14 @@ msgstr ""
 msgid "Hochladen"
 msgstr ""
 
+#: templates/index.html:15
+msgid "Beispiel"
+msgstr ""
+
+#: templates/index.html:20
+msgid "Beispieldatei herunterladen"
+msgstr ""
+
 #: templates/loading-1.html:9
 msgid "Validieren"
 msgstr ""
@@ -128,11 +136,11 @@ msgstr ""
 msgid "Beta E-ID erhalten"
 msgstr ""
 
-#: templates/people.html:26 templates/registered.html:26
+#: templates/people.html:26 templates/registered.html:42
 msgid "Existierende Datenbankeinträge"
 msgstr ""
 
-#: templates/people.html:34 templates/registered.html:35
+#: templates/people.html:34 templates/registered.html:54
 msgid "Keine Datenbankeinträge gefunden!"
 msgstr ""
 
@@ -145,8 +153,12 @@ msgstr ""
 msgid "Scannen Sie den QR-Code mit ihrer Wallet!"
 msgstr ""
 
-#: templates/registered.html:27
+#: templates/registered.html:43
 msgid "Vorname Name - Geb. Datum - Studiengang - Validiert"
+msgstr ""
+
+#: templates/registered.html:51
+msgid "Alle Einträge löschen"
 msgstr ""
 
 #: templates/register-e-id.html:8
