@@ -104,7 +104,7 @@ def get_api_key():
             "https://keycloak.trial.procivis-one.com/realms/trial/protocol/openid-connect/token",
             data={
                 "client_id": "one-educa",
-                "client_secret": "Y1oOzalI4idJoN9pIdrYpMFuSL0UB8hh",
+                "client_secret": "",
                 "grant_type": "client_credentials",
                 "scope":"openid"
             },
@@ -235,7 +235,7 @@ def upload_file():
                 credentialPayload = json.dumps({
                 "credentialSchemaId": "9841791e-06a4-4805-bfc9-d3286b851fdf",
                 "issuer": "f2164b6f-db9c-4807-94a8-9aad37c0bd4b",
-                "protocol": "OPENID4VCI_DRAFT13_SWIYU",
+                "protocol": "OPENID4VCI_FINAL1_SWIYU",
                 "claimValues": [
                     {
                     "claimId": "6fd5458f-bce7-46b8-bc6a-f7cfa9ac7d31",
@@ -791,7 +791,7 @@ def issue_study_card(id):
     credentialPayload = json.dumps({
         "credentialSchemaId": "d7b09ef6-6f30-4fc0-b24f-21af2c6dcfbe",
         "issuer": "b92bf54c-e91e-4537-94d6-bf804649bf0a",
-        "protocol": "OPENID4VCI_DRAFT13_SWIYU",
+        "protocol": "OPENID4VCI_FINAL1_SWIYU",
         "claimValues": [
             {
                 "claimId": "130d6d93-032a-4876-9dc8-c55752544f53",
