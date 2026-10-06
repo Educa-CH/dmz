@@ -104,7 +104,7 @@ def get_api_key():
             "https://keycloak.trial.procivis-one.com/realms/trial/protocol/openid-connect/token",
             data={
                 "client_id": "one-educa",
-                "client_secret": "Y1oOzalI4idJoN9pIdrYpMFuSL0UB8hh",
+                "client_secret": "xxx-xxx-xxx-xxx",
                 "grant_type": "client_credentials",
                 "scope":"openid"
             },
@@ -585,7 +585,6 @@ def register_e_id():
     conn.request("POST", f"/api/proof-request/v1/{proofCreatedId}/share", '{}', headers)
     individualProofRequestResponse = conn.getresponse()
 
-    print({accessToken})
     share_url = json.loads(individualProofRequestResponse.read().decode()).get("url")
     print(share_url)
 
